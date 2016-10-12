@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour {
 	void Start () 
 	{
 		Cursor.lockState = CursorLockMode.Locked;
+		Physics.gravity = new Vector3 (0, -35.0F, 0);
+
 	}
 
 	void Update () 
