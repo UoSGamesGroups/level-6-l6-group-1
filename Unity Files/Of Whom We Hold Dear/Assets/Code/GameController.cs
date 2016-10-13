@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour {
     private int replyCount;
 
     public List<LocalController> LocalControllers;
+    public GameObject[] spawnedFurniture;
 
     public int ReplyCount {
         get {
@@ -31,16 +32,27 @@ public class GameController : MonoBehaviour {
     public void LocalComplete() {
         replyCount++;
     }
-
+    
     private void TriggerGeneration() 
     {
+        if (spawnedFurniture.Length > 0){
+            foreach (GameObject item in spawnedFurniture){
+                Destroy(item);                          
+            }
+
+            //DELETE THE ARRAY CLEAR IT "spawnedFurniture"
+        }
+
         foreach (LocalController local in LocalControllers) {
             local.GenerateLocations();
         }
-    }
 
-	// Update is called once per frame
-	void Update () {
+     spawnedFurniture = GameObject.FindGameObjectsWithTag("SpawnedPrefab");
+
+}
+
+// Update is called once per frame
+void Update () {
 
 		CountTimer.text = timer.ToString("F1");
 
