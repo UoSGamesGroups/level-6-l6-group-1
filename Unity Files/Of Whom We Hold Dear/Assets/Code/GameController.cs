@@ -11,7 +11,13 @@ public class GameController : MonoBehaviour {
     private int replyCount;
 
     public List<LocalController> LocalControllers;
-    public GameObject[] spawnedFurniture;
+    public List<GameObject> spawnedFurniture;
+
+    public List<GameObject> Chairs;
+    public List<GameObject> Bed;
+    public List<GameObject> ChestDrawers;
+    public List<GameObject> KitchenCounter;
+    public List<GameObject> Rug;
 
     public int ReplyCount {
         get {
@@ -32,23 +38,39 @@ public class GameController : MonoBehaviour {
     public void LocalComplete() {
         replyCount++;
     }
-    
+
     private void TriggerGeneration() 
     {
-        if (spawnedFurniture.Length > 0){
+        if (spawnedFurniture.Count > 0){
             foreach (GameObject item in spawnedFurniture){
                 Destroy(item);                          
-            }
-
-            //DELETE THE ARRAY CLEAR IT "spawnedFurniture"
+            }     
         }
-
+        foreach (LocalController local in LocalControllers){
+            local.PopulateChairs(Chairs);
+        }
+        foreach (LocalController local in LocalControllers)
+        {
+            local.PopulateBed(Bed);
+        }
+        foreach (LocalController local in LocalControllers)
+        {
+            local.PopulateChestDrawers(ChestDrawers);
+        }
+        foreach (LocalController local in LocalControllers)
+        {
+            local.PopulateKitchenCounter(KitchenCounter);
+        }
+        foreach (LocalController local in LocalControllers)
+        {
+            local.PopulateRug(Rug);
+        }
         foreach (LocalController local in LocalControllers) {
             local.GenerateLocations();
         }
 
-     spawnedFurniture = GameObject.FindGameObjectsWithTag("SpawnedPrefab");
-
+        //spawnedFurniture.Clear();
+        spawnedFurniture.AddRange(GameObject.FindGameObjectsWithTag("SpawnedPrefab"));
 }
 
 // Update is called once per frame
