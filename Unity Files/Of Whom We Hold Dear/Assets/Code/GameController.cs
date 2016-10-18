@@ -43,7 +43,7 @@ public class GameController : MonoBehaviour {
     {
         if (spawnedFurniture.Count > 0){
             foreach (GameObject item in spawnedFurniture){
-                Destroy(item);                          
+                item.SetActive(false);                          
             }     
         }
         foreach (LocalController local in LocalControllers){
@@ -69,8 +69,20 @@ public class GameController : MonoBehaviour {
             local.GenerateLocations();
         }
 
-        //spawnedFurniture.Clear();
-        spawnedFurniture.AddRange(GameObject.FindGameObjectsWithTag("SpawnedPrefab"));
+        spawnedFurniture = new List<GameObject>();
+
+        List<GameObject> allFurniture = new List<GameObject>();
+        allFurniture.AddRange(GameObject.FindGameObjectsWithTag("SpawnedPrefab"));
+
+        for (int i = 0; i < allFurniture.Count; i++)
+        {
+            if (allFurniture[i].activeSelf)
+                spawnedFurniture.Add(allFurniture[i]);
+            else
+                Destroy(allFurniture[i]);
+        }
+
+        //spawnedFurniture.AddRange(GameObject.FindGameObjectsWithTag("SpawnedPrefab"));
 }
 
 // Update is called once per frame
