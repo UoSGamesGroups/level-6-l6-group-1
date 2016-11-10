@@ -19,6 +19,8 @@ public class GameController : MonoBehaviour {
     public List<GameObject> KitchenCounter;
     public List<GameObject> Rug;
 
+    public string sceneName;
+
     public int ReplyCount {
         get {
             return replyCount;
