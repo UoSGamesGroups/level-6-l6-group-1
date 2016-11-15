@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public GameController gamecontroller;
 
 
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -37,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
 
         else if (gamecontroller.sceneName == "Memory1" || gamecontroller.sceneName == "Memory2" || gamecontroller.sceneName == "Memory3")
         {
-            int index = UnityEngine.Random.Range(0, 3);
+            int index = UnityEngine.Random.Range(0, 2);
             move = spawnlocations[index].transform.position;
             transform.position = move;
         }
@@ -54,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
         animation.SetBool("WakeUpProgression", true);
         GetComponent<Renderer>().enabled = false;
 
-        StartCoroutine(waitforanimation(3,"WakeUpProgression"));
+        StartCoroutine(waitforanimation(9,"WakeUpProgression"));
 
     }
 
@@ -66,7 +67,6 @@ public class PlayerMovement : MonoBehaviour
         GetComponent<Renderer>().enabled = true;
         lockcontrols = true;
     }
-
 
     void Update()
     {
@@ -86,7 +86,6 @@ public class PlayerMovement : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
         }
-
     }
 
     void ResetMovementControls()
