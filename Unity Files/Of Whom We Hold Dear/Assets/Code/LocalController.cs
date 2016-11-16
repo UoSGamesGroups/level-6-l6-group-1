@@ -102,6 +102,8 @@ public class LocalController : MonoBehaviour {
                 //Make sure only specific cases can be selected for each room 
 
                 int index = UnityEngine.Random.Range(0, SpawnTypes.Length);
+                int x = UnityEngine.Random.Range(-5, 5);
+                int z = UnityEngine.Random.Range(-5, 5);             
                 int caseChooser = SpawnTypes[index];
                 print(caseChooser);
 
@@ -115,6 +117,8 @@ public class LocalController : MonoBehaviour {
                     case 0:
                         arrayPicker = UnityEngine.Random.Range(0, Chairs.Count);                     
                         transform = itemTransformLocation[i].transform.position;
+                        transform.x += x;
+                        transform.z += z;
                         instaPrefab = Chairs[arrayPicker];
                         Instantiate(Chairs[arrayPicker], transform, Quaternion.identity);
                         break;
@@ -123,6 +127,8 @@ public class LocalController : MonoBehaviour {
                     case 1:
                         arrayPicker = UnityEngine.Random.Range(0, Bed.Count);
                         transform = itemTransformLocation[i].transform.position;
+                        transform.x += x;
+                        transform.z += z;
                         instaPrefab = Bed[arrayPicker];
                         Instantiate(Bed[arrayPicker], transform, Quaternion.identity);
                         break;
@@ -131,6 +137,8 @@ public class LocalController : MonoBehaviour {
                     case 2:
                         arrayPicker = UnityEngine.Random.Range(0, ChestDrawers.Count);
                         transform = itemTransformLocation[i].transform.position;
+                        transform.x += x;
+                        transform.z += z;
                         instaPrefab = ChestDrawers[arrayPicker];
                         Instantiate(ChestDrawers[arrayPicker], transform, Quaternion.identity);
                         break;
@@ -139,6 +147,8 @@ public class LocalController : MonoBehaviour {
                     case 3:
                         arrayPicker = UnityEngine.Random.Range(0, KitchenCounter.Count);
                         transform = itemTransformLocation[i].transform.position;
+                        transform.x += x;
+                        transform.z += z;
                         instaPrefab = KitchenCounter[arrayPicker];
                         Instantiate(KitchenCounter[arrayPicker], transform, Quaternion.identity);
                         break;
@@ -147,6 +157,8 @@ public class LocalController : MonoBehaviour {
                     case 4:
                         arrayPicker = UnityEngine.Random.Range(0, Rug.Count);
                         transform = itemTransformLocation[i].transform.position;
+                        transform.x += x;
+                        transform.z += z;
                         instaPrefab = Rug[arrayPicker];
                         Instantiate(Rug[arrayPicker], transform, Quaternion.identity);
                         break;
