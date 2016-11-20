@@ -10,12 +10,17 @@ public class PlayerMovement : MonoBehaviour
 
     public Camera cam1;
     public Camera cam2;
+    public enum coinSelected {TwoPound, Pound, FiftyPence};
 
     public Animator animation;
     public Vector3 move;
     public bool lockcontrols = true;
+    public int twoPoundAmount;
+    public int poundAmount;
+    public int fiftyPenceAmount;
 
     public GameController gamecontroller;
+    public coinSelected CoinSelected;
 
 
 
@@ -72,6 +77,24 @@ public class PlayerMovement : MonoBehaviour
     {
         transform.Rotate(0, 90, 0);
 
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            CoinSelected = coinSelected.TwoPound;
+            Debug.Log("You have " + twoPoundAmount + " £2 Coins");
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            CoinSelected = coinSelected.Pound;
+            Debug.Log("You have " + poundAmount + " £1 Coins");
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            CoinSelected = coinSelected.FiftyPence;
+            Debug.Log("You have " + fiftyPenceAmount + " 50p Coins");
+        }
+
         if (lockcontrols)
         {
             float translation = Input.GetAxis("Vertical") * speed;
@@ -103,6 +126,33 @@ public class PlayerMovement : MonoBehaviour
             animation.SetBool("Fall", true);
             GetComponent<Renderer>().enabled = false;
          }
+ 
+        }
+
+    void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "TwoPound" || other.gameObject.tag == "Pound" || other.gameObject.tag == "FiftyPence")
+        {
+            if (Input.GetKeyDown("e"))
+            {
+               if (other.gameObject.tag == "TwoPound")
+                {
+                    twoPoundAmount++;
+                    Destroy(other.gameObject);
+                }
+               else if(other.gameObject.tag == "Pound")
+                {
+                    poundAmount++;
+                    Destroy(other.gameObject);
+                }
+                else
+                {
+                    fiftyPenceAmount++;
+                    Destroy(other.gameObject);
+                }
+            }
+        }
+
     }
 
     IEnumerator waitforanimation(int waitTimer, string animationname)

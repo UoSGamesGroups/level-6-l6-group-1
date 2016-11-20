@@ -105,7 +105,6 @@ public class LocalController : MonoBehaviour {
                 int x = UnityEngine.Random.Range(-5, 5);
                 int z = UnityEngine.Random.Range(-5, 5);             
                 int caseChooser = SpawnTypes[index];
-                print(caseChooser);
 
                 int arrayPicker;
                 Vector3 transform = new Vector3();
