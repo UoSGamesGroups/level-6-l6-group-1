@@ -9,7 +9,6 @@ public class Coin : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-
         int index = UnityEngine.Random.Range(0, nameArray.Length);
         coinType = nameArray[index];
 

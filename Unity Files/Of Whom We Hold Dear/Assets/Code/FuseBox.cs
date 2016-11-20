@@ -5,6 +5,9 @@ public class FuseBox : MonoBehaviour {
 
     public GameObject[] lightArray;
     public GameObject resetRedLight;
+    public GameObject EngagedGreenLight;
+    public GameObject CoinInsertedPurpleLight;
+    public GameObject FuseBoxFailRedLight;
     public float timer;
     public bool callOnce;
 
@@ -14,20 +17,21 @@ public class FuseBox : MonoBehaviour {
         callOnce = true;
         resetRedLight.SetActive(false);
         timer = 5;
-
     }
-	
-
 	void Update ()
     {
 	    if (timer <= 0 && callOnce)
         {
             LightOff();
             callOnce = false;
+            EngagedGreenLight.SetActive(false);
+            FuseBoxFailRedLight.SetActive(true);
         }
         if (timer >= 0)
         {
             timer -= Time.deltaTime;
+            EngagedGreenLight.SetActive(true);
+            FuseBoxFailRedLight.SetActive(false);
         }
 
 	}
