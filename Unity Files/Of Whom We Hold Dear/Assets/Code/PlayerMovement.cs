@@ -21,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
 
     public GameController gamecontroller;
     public coinSelected CoinSelected;
+    public FuseBox fusebox;
+    public bool resetlocked;
 
 
 
@@ -32,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
         cam2.enabled = false;
 
         gamecontroller = GameObject.FindGameObjectWithTag("NoticeBoard").GetComponent<GameController>();
+        fusebox = GameObject.FindGameObjectWithTag("Fusebox").GetComponent<FuseBox>();
 
         Scene scene = SceneManager.GetActiveScene();
 
@@ -60,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
         animation.SetBool("WakeUpProgression", true);
         GetComponent<Renderer>().enabled = false;
 
-        StartCoroutine(waitforanimation(9,"WakeUpProgression"));
+        StartCoroutine(waitforanimation(1,"WakeUpProgression"));
 
     }
 
@@ -152,6 +155,14 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
+        if (other.gameObject.tag == "ResetLights")
+        {
+            if (Input.GetKeyDown("e") && fusebox.resetRedLight.activeSelf == true)
+            {
+                RestartLights(10);
+            }
+
+        }
 
     }
 
@@ -159,5 +170,14 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTimer);
         ResetAnimations(animationname);
+    }
+
+
+    void RestartLights(int timerAddidition)
+    {
+        fusebox.timer += timerAddidition;
+        fusebox.callOnce = true;
+        fusebox.LightOff();
+
     }
 }
