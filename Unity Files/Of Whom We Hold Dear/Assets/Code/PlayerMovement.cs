@@ -178,7 +178,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetKeyDown("e") && fusebox.resetRedLight.activeSelf == true)
             {
-                fusebox.timer += 5;
+                fusebox.timer += 15;
                 fusebox.callOnce = true;
                 FuseClickingRestart = 0;
                 fusebox.LightOff();
