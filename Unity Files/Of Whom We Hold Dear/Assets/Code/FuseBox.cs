@@ -24,7 +24,7 @@ public class FuseBox : MonoBehaviour {
     {
         callOnce = true;
         resetRedLight.SetActive(false);
-        timer = 1;
+        timer = 7;
     }
 	void Update ()
     {
