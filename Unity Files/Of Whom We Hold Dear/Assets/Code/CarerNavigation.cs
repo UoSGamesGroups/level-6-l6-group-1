@@ -10,6 +10,7 @@ public class CarerNavigation : MonoBehaviour {
     public FuseBox fusebox;
     public Transform returnPosition;
     public Transform startPosition;
+    public GameObject CarerLight;
 
     // Use this for initialization
     void Start () {
@@ -34,10 +35,12 @@ public class CarerNavigation : MonoBehaviour {
         {
             playerLocation = player.transform.position;
             navMeshAgent.SetDestination(player.transform.position);
+            CarerLight.SetActive(true);
         }
         else
         {
             navMeshAgent.SetDestination(returnPosition.position);
+            CarerLight.SetActive(false);
         }
         
 
