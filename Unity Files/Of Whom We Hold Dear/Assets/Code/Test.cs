@@ -8,7 +8,7 @@ public class Test : MonoBehaviour {
 
     void Memory1()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
     void NextScene()
     {

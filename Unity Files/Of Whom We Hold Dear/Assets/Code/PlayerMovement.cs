@@ -67,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
         animation.SetBool("WakeUpProgression", true);
         GetComponent<Renderer>().enabled = false;
 
-        StartCoroutine(waitforanimation(1,"WakeUpProgression"));
+        StartCoroutine(waitforanimation(5,"WakeUpProgression"));
 
     }
 
