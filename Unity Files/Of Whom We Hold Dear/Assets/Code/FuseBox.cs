@@ -87,12 +87,12 @@ public class FuseBox : MonoBehaviour {
         {
             if (light.activeSelf == true)
             {
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(0.2f);
                 light.SetActive(false);
                 continue;
             }
             else
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(0.2f);
                 light.SetActive(true);
         } 
 
