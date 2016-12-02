@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 using System;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class GameController : MonoBehaviour {
 
@@ -18,8 +20,9 @@ public class GameController : MonoBehaviour {
     public List<GameObject> ChestDrawers;
     public List<GameObject> KitchenCounter;
     public List<GameObject> Rug;
-
-    public string sceneName;
+    public PlayerMovement playermovement;
+    public FuseBox fusebox;
+  //  public GameObject BlackPlane;
 
     public int ReplyCount {
         get {
@@ -34,8 +37,11 @@ public class GameController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		resetComplete = true;
-	}
+        TriggerGeneration();
+        resetComplete = true;
+        playermovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+        fusebox = GameObject.FindGameObjectWithTag("Fusebox").GetComponent<FuseBox>();
+    }
 	
     public void LocalComplete() {
         replyCount++;
@@ -85,7 +91,7 @@ public class GameController : MonoBehaviour {
         }
 
         //spawnedFurniture.AddRange(GameObject.FindGameObjectsWithTag("SpawnedPrefab"));
-}
+        }
 
 // Update is called once per frame
 void Update () {
@@ -96,8 +102,26 @@ void Update () {
 			timer -= Time.deltaTime;
 		} 
 		if (timer < 0 ){
-			timer = reset;
-            TriggerGeneration();
-		}
+            playermovement.CallAnimations("FallFail",3);
+            StartCoroutine(waitforanimation());
+
+            if (fusebox.EngagedGreenLight.activeSelf) 
+            {
+                fusebox.timer = 15;          
+                timer = reset;
+            } else {
+                playermovement.RestartLights(15);
+                
+            }
+            timer = reset;
+        }
+    }
+
+    IEnumerator waitforanimation()
+    {
+        yield return new WaitForSeconds(2.5f);
+        playermovement.RespawnLocations();
+        TriggerGeneration();
+        yield return new WaitForSeconds(1f);
     }
 }

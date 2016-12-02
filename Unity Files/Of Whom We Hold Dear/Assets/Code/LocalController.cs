@@ -1,65 +1,56 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 using System;
 
 
 public class LocalController : MonoBehaviour {
 
-	public enum itemLocation {Bedroom1, Bedroom2, LivingRoom, DiningRoom, Kitchen, Study_Lib, Atruim};
+    public enum itemLocation { Bedroom1, Bedroom2, LivingRoom, DiningRoom, Kitchen, Study_Lib, Atruim };
 
-	public Transform[] itemTransformLocation; 
+    public Transform[] itemTransformLocation;
     public List<GameObject> Chairs;
     public List<GameObject> Bed;
-	public List<GameObject> ChestDrawers;
-	public List<GameObject> KitchenCounter;
-	public List<GameObject> Rug;
+    public List<GameObject> ChestDrawers;
+    public List<GameObject> KitchenCounter;
+    public List<GameObject> Rug;
 
-	public float Timer;
-	public bool ChangeRoom;
+    public float Timer;
+    public bool ChangeRoom;
     public int replyCount;
 
-	public itemLocation ItemLocation;
+    public itemLocation ItemLocation;
 
-	public GameController gamecontroller;
+    public GameController gamecontroller;
 
     public int[] SpawnTypes;
 
-	void Awake()
-	{
-		gamecontroller = GameObject.FindGameObjectWithTag("NoticeBoard").GetComponent<GameController>();
-		ChangeRoom = true;
+    void Awake() {
+        gamecontroller = GameObject.FindGameObjectWithTag("NoticeBoard").GetComponent<GameController>();
+        ChangeRoom = true;
         gamecontroller.RegisterLocalController(this);
-	}
+    }
 
-    public void PopulateChairs(List<GameObject>chairs)
-    {
+    public void PopulateChairs(List<GameObject> chairs) {
         Chairs = chairs;
     }
-    public void PopulateBed(List<GameObject>bed)
-    {
+    public void PopulateBed(List<GameObject> bed) {
         Bed = bed;
     }
-    public void PopulateChestDrawers(List<GameObject>chestDrawers)
-    {
+    public void PopulateChestDrawers(List<GameObject> chestDrawers) {
         ChestDrawers = chestDrawers;
     }
 
-    public void PopulateKitchenCounter(List<GameObject>kitchenCounter)
-    {
+    public void PopulateKitchenCounter(List<GameObject> kitchenCounter) {
         KitchenCounter = kitchenCounter;
     }
 
-    public void PopulateRug(List<GameObject>rug)
-    {
+    public void PopulateRug(List<GameObject> rug) {
         Rug = rug;
     }
 
-    public void GenerateLocations()
-    {
-        if (itemTransformLocation.Length > 0)
-        {
-            switch (ItemLocation)
-            {
+    public void GenerateLocations() {
+        if (itemTransformLocation.Length > 0) {
+            switch (ItemLocation) {
                 case itemLocation.Bedroom1:
 
                     SpawnTypes = new int[] { 1, 2, 4 };
@@ -92,34 +83,32 @@ public class LocalController : MonoBehaviour {
 
                 case itemLocation.Atruim:
 
-                    SpawnTypes = new int[] {2, 4 };
+                    SpawnTypes = new int[] { 2, 4 };
                     break;
 
             }
 
-            for (int i = 0; i < itemTransformLocation.Length; i++)
-            {
+            for (int i = 0; i < itemTransformLocation.Length; i++) {
                 //Make sure only specific cases can be selected for each room 
 
                 int index = UnityEngine.Random.Range(0, SpawnTypes.Length);
                 int x = UnityEngine.Random.Range(-5, 5);
-                int z = UnityEngine.Random.Range(-5, 5);             
+                int z = UnityEngine.Random.Range(-5, 5);
                 int caseChooser = SpawnTypes[index];
 
                 int arrayPicker;
                 Vector3 transform = new Vector3();
                 GameObject instaPrefab;
 
-                    switch (caseChooser)
-                {
+                switch (caseChooser) {
                     ///////////////////////////////////////////////////////////////////////////////////////
                     case 0:
-                        arrayPicker = UnityEngine.Random.Range(0, Chairs.Count);                     
+                        arrayPicker = UnityEngine.Random.Range(0, Chairs.Count);
                         transform = itemTransformLocation[i].transform.position;
                         transform.x += x;
                         transform.z += z;
                         instaPrefab = Chairs[arrayPicker];
-                        Instantiate(Chairs[arrayPicker], transform, Quaternion.identity);
+                        Instantiate(instaPrefab, transform, Quaternion.identity);
                         break;
                     ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -129,7 +118,7 @@ public class LocalController : MonoBehaviour {
                         transform.x += x;
                         transform.z += z;
                         instaPrefab = Bed[arrayPicker];
-                        Instantiate(Bed[arrayPicker], transform, Quaternion.identity);
+                        Instantiate(instaPrefab, transform, Quaternion.identity);
                         break;
                     ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -139,7 +128,7 @@ public class LocalController : MonoBehaviour {
                         transform.x += x;
                         transform.z += z;
                         instaPrefab = ChestDrawers[arrayPicker];
-                        Instantiate(ChestDrawers[arrayPicker], transform, Quaternion.identity);
+                        Instantiate(instaPrefab, transform, Quaternion.identity);
                         break;
                     ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -149,7 +138,7 @@ public class LocalController : MonoBehaviour {
                         transform.x += x;
                         transform.z += z;
                         instaPrefab = KitchenCounter[arrayPicker];
-                        Instantiate(KitchenCounter[arrayPicker], transform, Quaternion.identity);
+                        Instantiate(instaPrefab, transform, Quaternion.identity);
                         break;
                     /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -159,7 +148,7 @@ public class LocalController : MonoBehaviour {
                         transform.x += x;
                         transform.z += z;
                         instaPrefab = Rug[arrayPicker];
-                        Instantiate(Rug[arrayPicker], transform, Quaternion.identity);
+                        Instantiate(instaPrefab, transform, Quaternion.identity);
                         break;
                         /////////////////////////////////////////////////////////////////////////////////////////
                 }

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     public Camera cam2;
     public enum coinSelected {TwoPound, Pound, FiftyPence};
     public enum fuseBoxCurrentCoin { TwoPound, Pound, FiftyPence };
+    public enum respawnLocations { memory1, memory2, memory3, memory4, memory5,prologue_epilogue };
 
     public Animator animation;
     public Vector3 move;
@@ -23,13 +24,15 @@ public class PlayerMovement : MonoBehaviour
     public GameController gamecontroller;
     public coinSelected CoinSelected;
     public fuseBoxCurrentCoin FuseBoxCurrentCoin;
+    public respawnLocations enumRespawnLocations;
     public FuseBox fusebox;
     public bool resetlocked;
     public bool coinInserted;
     public int FuseClickingRestart;
-
-
-
+    public GameObject[] CoinTypes;
+    public Transform ReturnCoin;
+    
+    
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -40,37 +43,19 @@ public class PlayerMovement : MonoBehaviour
         gamecontroller = GameObject.FindGameObjectWithTag("NoticeBoard").GetComponent<GameController>();
         fusebox = GameObject.FindGameObjectWithTag("Fusebox").GetComponent<FuseBox>();
 
-        Scene scene = SceneManager.GetActiveScene();
-
-        if (gamecontroller.sceneName == "prologue_epilogue" || gamecontroller.sceneName == "ScaleExample")
-        {
-            move = spawnlocations[3].transform.position;
-            transform.position = move;
-        }
-
-        else if (gamecontroller.sceneName == "Memory1" || gamecontroller.sceneName == "Memory2" || gamecontroller.sceneName == "Memory3")
-        {
-            int index = UnityEngine.Random.Range(0, 2);
-            move = spawnlocations[index].transform.position;
-            transform.position = move;
-        }
-        else 
-        {
-            int index = UnityEngine.Random.Range(0, spawnlocations.Length);
-            move = spawnlocations[index].transform.position;
-            transform.position = move;
-        }
-
-        cam1.enabled = !cam1.enabled;
-        cam2.enabled = !cam2.enabled;
-        lockcontrols = false;
-        animation.SetBool("WakeUpProgression", true);
-        GetComponent<Renderer>().enabled = false;
-
-        StartCoroutine(waitforanimation(5,"WakeUpProgression"));
-
+        RespawnLocations();
+        CallAnimations("WakeUpProgression", 5);
     }
 
+    public void CallAnimations(string failanimation, int animationtime)
+    {
+        lockcontrols = false;
+        cam1.enabled = !cam1.enabled;
+        cam2.enabled = !cam2.enabled;    
+        GetComponent<Renderer>().enabled = false;
+        animation.SetBool(failanimation, true);
+        StartCoroutine(waitforanimation(animationtime, failanimation));
+    }
     void ResetAnimations(string inprogressanimation)
     {
         cam1.enabled = !cam1.enabled;
@@ -78,6 +63,31 @@ public class PlayerMovement : MonoBehaviour
         animation.SetBool(inprogressanimation, false);
         GetComponent<Renderer>().enabled = true;
         lockcontrols = true;
+    }
+    IEnumerator waitforanimation(int waitTimer, string animationname)
+    {
+        yield return new WaitForSeconds(waitTimer);
+        ResetAnimations(animationname);
+    }
+
+    public void RespawnLocations()
+    {
+        if (enumRespawnLocations == respawnLocations.prologue_epilogue) 
+        { 
+            move = spawnlocations[3].transform.position;
+            transform.position = move;
+        } else if (enumRespawnLocations == respawnLocations.memory1 || enumRespawnLocations == respawnLocations.memory2 || enumRespawnLocations == respawnLocations.memory3)
+        {
+            int index = UnityEngine.Random.Range(0, 2);
+            move = spawnlocations[index].transform.position;
+            transform.position = move;
+            
+        } else {
+            int index = UnityEngine.Random.Range(0, spawnlocations.Length);
+            move = spawnlocations[index].transform.position;
+            transform.position = move;
+        }
+
     }
 
     void Update()
@@ -176,31 +186,46 @@ public class PlayerMovement : MonoBehaviour
         }
         if (other.gameObject.tag == "ResetLights")
         {
-            if (Input.GetKeyDown("e") && fusebox.resetRedLight.activeSelf == true)
+
+            if (Input.GetKeyDown("e") && fusebox.lastArray)
             {
-                fusebox.timer += 15;
-                fusebox.callOnce = true;
-                FuseClickingRestart = 0;
-                fusebox.LightOff();
+                if(coinInserted) 
+                {
+                    if(FuseBoxCurrentCoin == fuseBoxCurrentCoin.TwoPound) 
+                    {
+                        Instantiate(CoinTypes[0], ReturnCoin.transform.position, Quaternion.identity);
+                    }
+
+                    if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.Pound) {
+                        Instantiate(CoinTypes[1], ReturnCoin.transform.position, Quaternion.identity);
+                    }
+
+                    if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.FiftyPence) {
+                        Instantiate(CoinTypes[2], ReturnCoin.transform.position, Quaternion.identity);
+                    }
+
+                }
+
+                RestartLights(15);
             }
         }
         if(other.gameObject.tag == "Fusebox")
         {
-            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.TwoPound && twoPoundAmount > 0 && !fusebox.EngagedGreenLight.activeSelf && !coinInserted)
+            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.TwoPound && twoPoundAmount > 0 && !fusebox.EngagedGreenLight.activeSelf && !coinInserted && fusebox.lastArray)
             {
                 fusebox.CoinInsertedPurpleLight.SetActive(true);
                 twoPoundAmount--;
                 coinInserted = true;
                 FuseBoxCurrentCoin = fuseBoxCurrentCoin.TwoPound;
             }
-            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.Pound && poundAmount > 0 && !fusebox.EngagedGreenLight.activeSelf && !coinInserted)
+            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.Pound && poundAmount > 0 && !fusebox.EngagedGreenLight.activeSelf && !coinInserted && fusebox.lastArray)
             {
                 fusebox.CoinInsertedPurpleLight.SetActive(true);
                 poundAmount--;
                 coinInserted = true;
                 FuseBoxCurrentCoin = fuseBoxCurrentCoin.Pound;
             }
-            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.FiftyPence && fiftyPenceAmount > 0 && !fusebox.EngagedGreenLight.activeSelf && !coinInserted)
+            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.FiftyPence && fiftyPenceAmount > 0 && !fusebox.EngagedGreenLight.activeSelf && !coinInserted && fusebox.lastArray)
             {
                 fusebox.CoinInsertedPurpleLight.SetActive(true);
                 fiftyPenceAmount--;
@@ -218,17 +243,9 @@ public class PlayerMovement : MonoBehaviour
         
 
         }
-
-    IEnumerator waitforanimation(int waitTimer, string animationname)
+    public void RestartLights(int timerAddidition)
     {
-        yield return new WaitForSeconds(waitTimer);
-        ResetAnimations(animationname);
-    }
-
-
-    void RestartLights(int timerAddidition)
-    {
-        fusebox.timer += timerAddidition;
+        fusebox.timer = timerAddidition;
         fusebox.callOnce = true;
         fusebox.CoinInsertedPurpleLight.SetActive(false);
         FuseClickingRestart = 0;

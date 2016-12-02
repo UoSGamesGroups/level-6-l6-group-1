@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,13 +18,15 @@ public class FuseBox : MonoBehaviour {
     public GameObject FuseBoxFailRedLight;
     public float timer;
     public bool callOnce;
+    public bool lastArray;
+    public int StartTimer;
 
 
 	void Start ()
     {
         callOnce = true;
         resetRedLight.SetActive(false);
-        timer = 7;
+        timer += 15;
     }
 	void Update ()
     {
@@ -33,15 +35,21 @@ public class FuseBox : MonoBehaviour {
             LightOff();
             callOnce = false;
             EngagedGreenLight.SetActive(false);
-            FuseBoxFailRedLight.SetActive(true);
         }
+
+        if(lastArray) 
+        {
+            FuseBoxFailRedLight.SetActive(true);
+            resetRedLight.SetActive(true);
+        }
+       
         if (timer >= 0)
         {
             timer -= Time.deltaTime;
             EngagedGreenLight.SetActive(true);
             FuseBoxFailRedLight.SetActive(false);
+            resetRedLight.SetActive(false);
         }
-
 	}
 
     private void Swap(ref GameObject a, ref GameObject b)
@@ -76,25 +84,26 @@ public class FuseBox : MonoBehaviour {
 
     IEnumerator Wait(int waitTimer)
     {
-        if (resetRedLight.activeSelf)
-        {
-            resetRedLight.SetActive(false);
-        }
-        else
-            resetRedLight.SetActive(true);
-
         foreach (GameObject light in lightArray)
         {
             if (light.activeSelf == true)
             {
-                yield return new WaitForSeconds(0.2f);
+                yield return new WaitForSeconds(0.3f);
                 light.SetActive(false);
                 continue;
             }
             else
-                yield return new WaitForSeconds(0.2f);
+                yield return new WaitForSeconds(0.3f);
                 light.SetActive(true);
         } 
+
+        if(lightArray[lightArray.Length-1].activeSelf == false) 
+        {
+            lastArray = true;
+        } else {
+
+            lastArray = false;
+        }
 
     }
 

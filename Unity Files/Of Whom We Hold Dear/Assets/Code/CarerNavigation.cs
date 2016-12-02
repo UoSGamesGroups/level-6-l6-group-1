@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class CarerNavigation : MonoBehaviour {
@@ -22,7 +22,7 @@ public class CarerNavigation : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if(!fusebox.EngagedGreenLight.activeSelf)
+        if(fusebox.lastArray)
         {
             stopChasing = true;
         }
