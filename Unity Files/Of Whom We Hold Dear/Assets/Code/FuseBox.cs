@@ -20,9 +20,10 @@ public class FuseBox : MonoBehaviour {
     public bool callOnce;
     public bool lastArray;
     public int StartTimer;
+    public TextMesh CountTimer;
 
 
-	void Start ()
+    void Start ()
     {
         callOnce = true;
         resetRedLight.SetActive(false);
@@ -30,7 +31,9 @@ public class FuseBox : MonoBehaviour {
     }
 	void Update ()
     {
-	    if (timer <= 0 && callOnce)
+        CountTimer.text = timer.ToString("F1");
+
+        if (timer <= 0 && callOnce)
         {
             LightOff();
             callOnce = false;

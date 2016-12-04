@@ -74,20 +74,24 @@ public class PlayerMovement : MonoBehaviour
     {
         if (enumRespawnLocations == respawnLocations.prologue_epilogue) 
         { 
-            move = spawnlocations[3].transform.position;
+            move = spawnlocations[2].transform.position;
             transform.position = move;
-        } else if (enumRespawnLocations == respawnLocations.memory1 || enumRespawnLocations == respawnLocations.memory2 || enumRespawnLocations == respawnLocations.memory3)
+        } else if (enumRespawnLocations == respawnLocations.memory1)
+        {
+            move = spawnlocations[3].transform.position;
+            transform.position = move;          
+        }
+        else if (enumRespawnLocations == respawnLocations.memory2 || enumRespawnLocations == respawnLocations.memory3)
         {
             int index = UnityEngine.Random.Range(0, 2);
             move = spawnlocations[index].transform.position;
             transform.position = move;
-            
-        } else {
+        }
+        else {
             int index = UnityEngine.Random.Range(0, spawnlocations.Length);
             move = spawnlocations[index].transform.position;
             transform.position = move;
         }
-
     }
 
     void Update()
@@ -240,7 +244,13 @@ public class PlayerMovement : MonoBehaviour
                 FuseClickingRestart++;
             }
         }
-        
+        if (other.gameObject.tag == "TestSceneMovement")
+        {
+            if (Input.GetKeyDown("e"))
+            {
+                CallAnimations("FallProggession", 10);
+            }
+        }
 
         }
     public void RestartLights(int timerAddidition)
