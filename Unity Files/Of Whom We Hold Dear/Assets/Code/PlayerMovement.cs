@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
 
     public Camera cam1;
     public Camera cam2;
+    public Camera puzzlecam3;                   // Sliding puzzle camera 
     public enum coinSelected {TwoPound, Pound, FiftyPence};
     public enum fuseBoxCurrentCoin { TwoPound, Pound, FiftyPence };
     public enum respawnLocations { memory1, memory2, memory3, memory4, memory5,prologue_epilogue };
@@ -31,8 +32,8 @@ public class PlayerMovement : MonoBehaviour
     public int FuseClickingRestart;
     public GameObject[] CoinTypes;
     public Transform ReturnCoin;
-    
-    
+    private bool visible;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -101,13 +102,13 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             CoinSelected = coinSelected.TwoPound;
-            Debug.Log("You have " + twoPoundAmount + " £2 Coins");
+            Debug.Log("You have " + twoPoundAmount + " Â£2 Coins");
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             CoinSelected = coinSelected.Pound;
-            Debug.Log("You have " + poundAmount + " £1 Coins");
+            Debug.Log("You have " + poundAmount + " Â£1 Coins");
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
@@ -162,8 +163,7 @@ public class PlayerMovement : MonoBehaviour
             animation.SetBool("Fall", true);
             GetComponent<Renderer>().enabled = false;
          }
- 
-        }
+     }
 
     void OnTriggerStay(Collider other)
     {
@@ -251,8 +251,21 @@ public class PlayerMovement : MonoBehaviour
                 CallAnimations("FallProggession", 10);
             }
         }
-
+        if (other.gameObject.tag == "SignificantItem")              // If player presses E when in trigger of significant item, activates or deactivates camera to puzzle
+        {
+            if (Input.GetKeyDown("e"))
+                {
+                puzzlecam3.enabled = !puzzlecam3.enabled;
+                lockcontrols = !lockcontrols;
+                Cursor.visible = true;                              // Conflict with earlier script needs sorting
+                }
+            else
+            {
+                
+            }
         }
+    }
+
     public void RestartLights(int timerAddidition)
     {
         fusebox.timer = timerAddidition;

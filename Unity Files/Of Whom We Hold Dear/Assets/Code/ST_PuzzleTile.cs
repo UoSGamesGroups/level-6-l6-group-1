@@ -10,7 +10,6 @@ public class ST_PuzzleTile : MonoBehaviour
 	public Vector2 ArrayLocation = new Vector2();   // Stores location of tile
 	public Vector2 GridLocation = new Vector2();    // Stores location of tile
 
-    private Renderer rend;
 
 	void Awake()
 	{
@@ -21,24 +20,7 @@ public class ST_PuzzleTile : MonoBehaviour
 		StartCoroutine(UpdatePosition());
 	}
 
-    void Start()
-    {
-        rend = GetComponent<Renderer>();
-        rend.enabled = false;
-    }
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            rend.enabled = false;
 
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            rend.enabled = true;
-
-        }
-    }
 	public  void LaunchPositionCoroutine(Vector3 newPosition)
 	{
 		// Assigns new position for tile to go to

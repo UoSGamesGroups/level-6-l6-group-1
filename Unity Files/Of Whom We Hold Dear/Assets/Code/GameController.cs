@@ -121,7 +121,9 @@ void Update () {
     {
         yield return new WaitForSeconds(2.5f);
         playermovement.RespawnLocations();
+        playermovement.puzzlecam3.enabled = false;
         TriggerGeneration();
+        Cursor.visible = false;
         yield return new WaitForSeconds(1f);
     }
 }
