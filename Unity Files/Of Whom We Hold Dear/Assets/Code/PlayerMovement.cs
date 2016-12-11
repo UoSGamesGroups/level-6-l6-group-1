@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject[] CoinTypes;
     public Transform ReturnCoin;
     private bool visible;
+    public bool inAnimation;
 
     void Start()
     {
@@ -50,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void CallAnimations(string failanimation, int animationtime)
     {
+        inAnimation = true;
         lockcontrols = false;
         cam1.enabled = !cam1.enabled;
         cam2.enabled = !cam2.enabled;    
@@ -64,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
         animation.SetBool(inprogressanimation, false);
         GetComponent<Renderer>().enabled = true;
         lockcontrols = true;
+        inAnimation = false;
     }
     IEnumerator waitforanimation(int waitTimer, string animationname)
     {
@@ -157,6 +160,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.gameObject.tag == "Fall")
         {
+            inAnimation = true;
             cam1.enabled = !cam1.enabled;
             cam2.enabled = !cam2.enabled;
             lockcontrols = false;

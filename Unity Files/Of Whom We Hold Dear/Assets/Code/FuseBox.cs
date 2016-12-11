@@ -21,13 +21,17 @@ public class FuseBox : MonoBehaviour {
     public bool lastArray;
     public int StartTimer;
     public TextMesh CountTimer;
+    public PlayerMovement playermovement;
 
 
     void Start ()
     {
+        playermovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         callOnce = true;
+        timer += StartTimer;
+        EngagedGreenLight.SetActive(true);
+        FuseBoxFailRedLight.SetActive(false);
         resetRedLight.SetActive(false);
-        timer += 15;
     }
 	void Update ()
     {
@@ -46,7 +50,7 @@ public class FuseBox : MonoBehaviour {
             resetRedLight.SetActive(true);
         }
        
-        if (timer >= 0)
+        if (timer >= 0 && playermovement.enumRespawnLocations != PlayerMovement.respawnLocations.prologue_epilogue)
         {
             timer -= Time.deltaTime;
             EngagedGreenLight.SetActive(true);
