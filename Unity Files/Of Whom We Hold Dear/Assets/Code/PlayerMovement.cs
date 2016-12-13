@@ -271,6 +271,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetKeyDown("e"))
                 {
+                inAnimation = !inAnimation;
                 puzzlecam3.enabled = !puzzlecam3.enabled;
                 lockcontrols = !lockcontrols;
                 Cursor.lockState = CursorLockMode.None;

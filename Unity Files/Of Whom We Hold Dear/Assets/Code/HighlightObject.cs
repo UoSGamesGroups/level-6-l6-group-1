@@ -8,7 +8,7 @@ public class HighlightObject : MonoBehaviour
     public Color hovercolor;
     public bool mouseOver = false;
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
