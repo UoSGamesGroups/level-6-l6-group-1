@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
     public Transform ReturnCoin;
     private bool visible;
     public bool inAnimation;
-
+    static public bool debugPuzzle = true;         // Stops constant animation playing after puzzle completion
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -44,7 +44,6 @@ public class PlayerMovement : MonoBehaviour
 
         gamecontroller = GameObject.FindGameObjectWithTag("NoticeBoard").GetComponent<GameController>();
         fusebox = GameObject.FindGameObjectWithTag("Fusebox").GetComponent<FuseBox>();
-
         RespawnLocations();
         CallAnimations("WakeUpProgression", 5);
     }
@@ -147,6 +146,19 @@ public class PlayerMovement : MonoBehaviour
             if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.FiftyPence)
             {
                 RestartLights(25);
+            }
+        }
+        if (puzzlecam3.enabled == false)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        if (ST_PuzzleDisplay.Complete == true)
+        {
+            if (debugPuzzle == true)
+            {
+                CallAnimations("FallProggession", 10);
+                puzzlecam3.enabled = false;
+                debugPuzzle = false;
             }
         }
     }
@@ -261,11 +273,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                 puzzlecam3.enabled = !puzzlecam3.enabled;
                 lockcontrols = !lockcontrols;
-                Cursor.visible = true;                              // Conflict with earlier script needs sorting
-                }
-            else
-            {
-                
+                Cursor.lockState = CursorLockMode.None;
             }
         }
     }

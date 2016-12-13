@@ -12,7 +12,7 @@ public class ST_PuzzleDisplay : MonoBehaviour
 	public float SpaceBetweenTiles = 0.5f;                          // Space between the square tile pieces
 	public GameObject Tile;                                         // Tile displaying the object
 	public Shader PuzzleShader;                                     // Shows the texture on the object
-    public bool Complete = false;                                   // Checks if the puzzle is complete 
+    static public bool Complete = false;                                   // Checks if the puzzle is complete 
 
     private GameObject[,] TileDisplayArray;                         // array of the spawned tiles
     private List<Vector3>  DisplayPositions = new List<Vector3>();
@@ -197,10 +197,8 @@ public class ST_PuzzleDisplay : MonoBehaviour
 		if(Complete)
 		{
 			Debug.Log("Puzzle Complete!");
-            /* 
-            we can put the level change here or another function such as white transition screen or such
-            */
-		}
+            
+        }
 
 		yield return null;
 	}

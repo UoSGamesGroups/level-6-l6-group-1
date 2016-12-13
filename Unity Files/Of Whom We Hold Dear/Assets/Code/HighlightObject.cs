@@ -17,11 +17,9 @@ public class HighlightObject : MonoBehaviour
     }
 
     void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            mouseOver = false;
-        }
+    {   
+        GetComponent<Renderer>().material.SetColor("_Color", startcolor);
+        mouseOver = false;
     }
 
     void OnMouseEnter()
