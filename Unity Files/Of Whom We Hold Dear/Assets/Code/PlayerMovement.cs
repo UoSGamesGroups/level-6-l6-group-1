@@ -6,21 +6,22 @@ public class PlayerMovement : MonoBehaviour
 {
 
     public float speed = 20.0f;
-    public Transform[] spawnlocations; 
+    public Transform[] spawnlocations;
 
+
+    public GameObject currentCoin;
+    public Transform coinPos;
+    public bool holdingCoin;
     public Camera cam1;
     public Camera cam2;
     public Camera puzzlecam3;                   // Sliding puzzle camera 
-    public enum coinSelected {TwoPound, Pound, FiftyPence};
+    public enum coinSelected { TwoPound, Pound, FiftyPence };
     public enum fuseBoxCurrentCoin { TwoPound, Pound, FiftyPence };
-    public enum respawnLocations { memory1, memory2, memory3, memory4, memory5,prologue_epilogue };
+    public enum respawnLocations { memory1, memory2, memory3, memory4, memory5, prologue_epilogue };
 
     public Animator animation;
     public Vector3 move;
     public bool lockcontrols = true;
-    public int twoPoundAmount;
-    public int poundAmount;
-    public int fiftyPenceAmount;
 
     public GameController gamecontroller;
     public coinSelected CoinSelected;
@@ -53,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
         inAnimation = true;
         lockcontrols = false;
         cam1.enabled = !cam1.enabled;
-        cam2.enabled = !cam2.enabled;    
+        cam2.enabled = !cam2.enabled;
         GetComponent<Renderer>().enabled = false;
         animation.SetBool(failanimation, true);
         StartCoroutine(waitforanimation(animationtime, failanimation));
@@ -75,14 +76,15 @@ public class PlayerMovement : MonoBehaviour
 
     public void RespawnLocations()
     {
-        if (enumRespawnLocations == respawnLocations.prologue_epilogue) 
-        { 
+        if (enumRespawnLocations == respawnLocations.prologue_epilogue)
+        {
             move = spawnlocations[2].transform.position;
             transform.position = move;
-        } else if (enumRespawnLocations == respawnLocations.memory1)
+        }
+        else if (enumRespawnLocations == respawnLocations.memory1)
         {
             move = spawnlocations[3].transform.position;
-            transform.position = move;          
+            transform.position = move;
         }
         else if (enumRespawnLocations == respawnLocations.memory2 || enumRespawnLocations == respawnLocations.memory3)
         {
@@ -90,7 +92,8 @@ public class PlayerMovement : MonoBehaviour
             move = spawnlocations[index].transform.position;
             transform.position = move;
         }
-        else {
+        else
+        {
             int index = UnityEngine.Random.Range(0, spawnlocations.Length);
             move = spawnlocations[index].transform.position;
             transform.position = move;
@@ -99,25 +102,21 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown("r") && holdingCoin)
+        {
+            coinPos.DetachChildren();
+            currentCoin.transform.position = transform.position;
+            currentCoin.GetComponent<Rigidbody>().useGravity = true;
+            currentCoin = null;
+            holdingCoin = false;
+        }
+        if (holdingCoin && currentCoin != null)
+        {
+            currentCoin.transform.position = coinPos.transform.position;
+        }
+
+
         transform.Rotate(0, 90, 0);
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            CoinSelected = coinSelected.TwoPound;
-            Debug.Log("You have " + twoPoundAmount + " Â£2 Coins");
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            CoinSelected = coinSelected.Pound;
-            Debug.Log("You have " + poundAmount + " Â£1 Coins");
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            CoinSelected = coinSelected.FiftyPence;
-            Debug.Log("You have " + fiftyPenceAmount + " 50p Coins");
-        }
 
         if (lockcontrols)
         {
@@ -135,7 +134,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (FuseClickingRestart >= 20)
         {
-            if(FuseBoxCurrentCoin == fuseBoxCurrentCoin.TwoPound)
+            if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.TwoPound)
             {
                 RestartLights(100);
             }
@@ -178,79 +177,84 @@ public class PlayerMovement : MonoBehaviour
             lockcontrols = false;
             animation.SetBool("Fall", true);
             GetComponent<Renderer>().enabled = false;
-         }
-     }
+        }
+    }
 
     void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "TwoPound" || other.gameObject.tag == "Pound" || other.gameObject.tag == "FiftyPence")
         {
-            if (Input.GetKeyDown("e"))
+            if (Input.GetKeyDown("e") && !holdingCoin)
             {
-               if (other.gameObject.tag == "TwoPound")
+                other.gameObject.transform.parent = coinPos.transform;
+                other.gameObject.GetComponent<Rigidbody>().useGravity = false;
+                holdingCoin = true;
+                currentCoin = other.gameObject;
+
+                if (other.gameObject.tag == "TwoPound")
                 {
-                    twoPoundAmount++;
-                    Destroy(other.gameObject);
+                    CoinSelected = coinSelected.TwoPound;
                 }
-               else if(other.gameObject.tag == "Pound")
+                if (other.gameObject.tag == "FiftyPence")
                 {
-                    poundAmount++;
-                    Destroy(other.gameObject);
+                    CoinSelected = coinSelected.FiftyPence;
                 }
-                else
+                if (other.gameObject.tag == "Pound")
                 {
-                    fiftyPenceAmount++;
-                    Destroy(other.gameObject);
+                    CoinSelected = coinSelected.Pound;
                 }
             }
         }
         if (other.gameObject.tag == "ResetLights")
         {
-
             if (Input.GetKeyDown("e") && fusebox.lastArray)
             {
-                if(coinInserted) 
+                if (coinInserted)
                 {
-                    if(FuseBoxCurrentCoin == fuseBoxCurrentCoin.TwoPound) 
+                    if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.TwoPound)
                     {
                         Instantiate(CoinTypes[0], ReturnCoin.transform.position, Quaternion.identity);
                     }
 
-                    if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.Pound) {
+                    if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.Pound)
+                    {
                         Instantiate(CoinTypes[1], ReturnCoin.transform.position, Quaternion.identity);
                     }
 
-                    if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.FiftyPence) {
+                    if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.FiftyPence)
+                    {
                         Instantiate(CoinTypes[2], ReturnCoin.transform.position, Quaternion.identity);
                     }
-
                 }
 
                 RestartLights(15);
             }
         }
-        if(other.gameObject.tag == "Fusebox")
+        if (other.gameObject.tag == "Fusebox")
         {
-            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.TwoPound && twoPoundAmount > 0 && !fusebox.EngagedGreenLight.activeSelf && !coinInserted && fusebox.lastArray)
+            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.TwoPound && !fusebox.EngagedGreenLight.activeSelf && !coinInserted && fusebox.lastArray && holdingCoin)
             {
+                holdingCoin = false;          
                 fusebox.CoinInsertedPurpleLight.SetActive(true);
-                twoPoundAmount--;
                 coinInserted = true;
                 FuseBoxCurrentCoin = fuseBoxCurrentCoin.TwoPound;
+                Destroy(currentCoin);
             }
-            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.Pound && poundAmount > 0 && !fusebox.EngagedGreenLight.activeSelf && !coinInserted && fusebox.lastArray)
+            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.FiftyPence && !fusebox.EngagedGreenLight.activeSelf && !coinInserted && fusebox.lastArray && holdingCoin)
             {
+                holdingCoin = false;
                 fusebox.CoinInsertedPurpleLight.SetActive(true);
-                poundAmount--;
-                coinInserted = true;
-                FuseBoxCurrentCoin = fuseBoxCurrentCoin.Pound;
-            }
-            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.FiftyPence && fiftyPenceAmount > 0 && !fusebox.EngagedGreenLight.activeSelf && !coinInserted && fusebox.lastArray)
-            {
-                fusebox.CoinInsertedPurpleLight.SetActive(true);
-                fiftyPenceAmount--;
                 coinInserted = true;
                 FuseBoxCurrentCoin = fuseBoxCurrentCoin.FiftyPence;
+                Destroy(currentCoin);
+            }
+            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.Pound && !fusebox.EngagedGreenLight.activeSelf && !coinInserted && fusebox.lastArray && holdingCoin)
+            {
+                holdingCoin = false;
+                fusebox.CoinInsertedPurpleLight.SetActive(true);
+                coinInserted = true;
+                FuseBoxCurrentCoin = fuseBoxCurrentCoin.Pound;
+                Destroy(currentCoin);
             }
         }
         if (other.gameObject.tag == "Fusebox" && coinInserted)
@@ -270,7 +274,7 @@ public class PlayerMovement : MonoBehaviour
         if (other.gameObject.tag == "SignificantItem")              // If player presses E when in trigger of significant item, activates or deactivates camera to puzzle
         {
             if (Input.GetKeyDown("e"))
-                {
+            {
                 inAnimation = !inAnimation;
                 puzzlecam3.enabled = !puzzlecam3.enabled;
                 lockcontrols = !lockcontrols;
