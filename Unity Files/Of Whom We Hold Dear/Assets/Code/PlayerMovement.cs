@@ -36,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
     private bool visible;
     public bool inAnimation;
     static public bool debugPuzzle = true;         // Stops constant animation playing after puzzle completion
+    public bool carerTrigger;
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -169,7 +170,11 @@ public class PlayerMovement : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Fall")
+        if (other.gameObject.tag == "TriggerCarer")
+        {
+            carerTrigger = true;
+        }
+            if (other.gameObject.tag == "Fall")
         {
             inAnimation = true;
             cam1.enabled = !cam1.enabled;
