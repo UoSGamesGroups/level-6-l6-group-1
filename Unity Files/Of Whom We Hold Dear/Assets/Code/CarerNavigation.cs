@@ -2,7 +2,8 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
 
-public class CarerNavigation : MonoBehaviour {
+public class CarerNavigation : MonoBehaviour
+{
 
     public UnityEngine.AI.NavMeshAgent navMeshAgent;
     public GameObject player;
@@ -20,7 +21,8 @@ public class CarerNavigation : MonoBehaviour {
     public bool searching;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         transform.position = startPosition.position;
         navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         fusebox = GameObject.FindGameObjectWithTag("Fusebox").GetComponent<FuseBox>();
@@ -32,13 +34,14 @@ public class CarerNavigation : MonoBehaviour {
         int index = UnityEngine.Random.Range(0, carerMovementNodes.Length);
         return index;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
 
         navMeshAgent.updateRotation = true;
 
-        if(fusebox.lastArray)
+        if (fusebox.lastArray)
         {
             stopChasing = true;
             CarerLight.SetActive(true);
@@ -63,24 +66,24 @@ public class CarerNavigation : MonoBehaviour {
 
         }
 
-       if(stopChasing && !foundPlayer && playermovement.carerTrigger)
+        if (stopChasing && !foundPlayer && playermovement.carerTrigger)
         {
             animation.SetBool("Finding", true);
             RaycastHit hit;
             Ray newRay = new Ray(transform.position, transform.forward);
 
-            if (Physics.Raycast(newRay, out hit, 500)) 
+            if (Physics.Raycast(newRay, out hit, 500))
             {
                 Debug.DrawLine(transform.position, target.position);
 
                 Debug.Log(hit.collider.tag);
 
-                if(hit.collider.tag == "Player")
+                if (hit.collider.tag == "Player")
                 {
                     foundPlayer = true;
                     animation.SetBool("Finding", false);
                 }
- 
+
             }
         }
 
@@ -93,6 +96,15 @@ public class CarerNavigation : MonoBehaviour {
         {
             nodePosition = getNewTransform();
         }
-        
-	}
+
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            foundPlayer = true;
+            animation.SetBool("Finding", false);
+        }
+    }
 }
