@@ -36,6 +36,7 @@ public class CarerNavigation : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        navMeshAgent.updateRotation = true;
 
         if(fusebox.lastArray)
         {
@@ -53,13 +54,13 @@ public class CarerNavigation : MonoBehaviour {
         }
         if (playermovement.carerTrigger && !foundPlayer)
         {
-            navMeshAgent.SetDestination(carerMovementNodes[nodePosition].position);          
+            navMeshAgent.SetDestination(carerMovementNodes[nodePosition].position);
         }
         if (playermovement.carerTrigger && foundPlayer)
         {
             navMeshAgent.SetDestination(player.transform.position);
             navMeshAgent.GetComponent<NavMeshAgent>().speed = 10;
-            animation.SetBool("Finding", false);
+
         }
 
        if(stopChasing && !foundPlayer && playermovement.carerTrigger)
@@ -69,7 +70,6 @@ public class CarerNavigation : MonoBehaviour {
             Ray newRay = new Ray(transform.position, transform.forward);
 
             if (Physics.Raycast(newRay, out hit, 500)) 
-
             {
                 Debug.DrawLine(transform.position, target.position);
 
@@ -78,6 +78,7 @@ public class CarerNavigation : MonoBehaviour {
                 if(hit.collider.tag == "Player")
                 {
                     foundPlayer = true;
+                    animation.SetBool("Finding", false);
                 }
  
             }
