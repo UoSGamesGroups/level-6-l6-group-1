@@ -52,10 +52,20 @@ public class FuseBox : MonoBehaviour {
        
         if (timer >= 0 && playermovement.enumRespawnLocations != PlayerMovement.respawnLocations.prologue_epilogue)
         {
-            timer -= Time.deltaTime;
-            EngagedGreenLight.SetActive(true);
-            FuseBoxFailRedLight.SetActive(false);
-            resetRedLight.SetActive(false);
+            if (timer >= 0 && playermovement.enumRespawnLocations == PlayerMovement.respawnLocations.memory2 && playermovement.carerTrigger)
+            {
+                timer -= Time.deltaTime;
+                EngagedGreenLight.SetActive(true);
+                FuseBoxFailRedLight.SetActive(false);
+                resetRedLight.SetActive(false);
+            }
+            else if(timer >= 0 && playermovement.enumRespawnLocations == PlayerMovement.respawnLocations.memory3 || playermovement.enumRespawnLocations == PlayerMovement.respawnLocations.memory5 || playermovement.enumRespawnLocations == PlayerMovement.respawnLocations.memory5)
+            {
+                timer -= Time.deltaTime;
+                EngagedGreenLight.SetActive(true);
+                FuseBoxFailRedLight.SetActive(false);
+                resetRedLight.SetActive(false);
+            }
         }
 	}
 

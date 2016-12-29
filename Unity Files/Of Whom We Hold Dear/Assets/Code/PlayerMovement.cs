@@ -37,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
     public bool inAnimation;
     static public bool debugPuzzle = true;         // Stops constant animation playing after puzzle completion
     public bool carerTrigger;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
