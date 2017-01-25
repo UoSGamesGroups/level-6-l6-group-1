@@ -50,8 +50,12 @@ public class FuseBox : MonoBehaviour {
             resetRedLight.SetActive(true);
         }
        
-        if (timer >= 0 && playermovement.enumRespawnLocations != PlayerMovement.respawnLocations.prologue_epilogue)
+        if (timer > 0 && playermovement.enumRespawnLocations != PlayerMovement.respawnLocations.prologue_epilogue)
         {
+            EngagedGreenLight.SetActive(true);
+            FuseBoxFailRedLight.SetActive(false);
+            resetRedLight.SetActive(false);
+
             if (timer >= 0 && playermovement.enumRespawnLocations == PlayerMovement.respawnLocations.memory2 && playermovement.carerTrigger)
             {
                 timer -= Time.deltaTime;
