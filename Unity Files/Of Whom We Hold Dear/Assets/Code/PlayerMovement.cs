@@ -40,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        GetComponent<Rigidbody>().freezeRotation = true;
         Cursor.lockState = CursorLockMode.Locked;
         Physics.gravity = new Vector3(0, -35.0F, 0);
         cam1.enabled = true;
