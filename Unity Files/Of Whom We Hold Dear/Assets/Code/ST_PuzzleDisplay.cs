@@ -12,7 +12,7 @@ public class ST_PuzzleDisplay : MonoBehaviour
 	public float SpaceBetweenTiles = 0.5f;                          // Space between the square tile pieces
 	public GameObject Tile;                                         // Tile displaying the object
 	public Shader PuzzleShader;                                     // Shows the texture on the object
-    static public bool Complete = false;                                   // Checks if the puzzle is complete 
+    static public bool Complete = false;                            // Checks if the puzzle is complete 
 
     private GameObject[,] TileDisplayArray;                         // array of the spawned tiles
     private List<Vector3>  DisplayPositions = new List<Vector3>();
@@ -146,12 +146,12 @@ public class ST_PuzzleDisplay : MonoBehaviour
 
 	private IEnumerator JugglePuzzle()
 	{
-		yield return new WaitForSeconds(1.0f);
+		yield return new WaitForSeconds(0.1f);
 
 		// hides one tile piece
 		TileDisplayArray[0,0].GetComponent<ST_PuzzleTile>().Active = false;
 
-		yield return new WaitForSeconds(1.0f);
+		yield return new WaitForSeconds(0.1f);
 
 		for(int k = 0; k < 20; k++)
 		{
@@ -163,8 +163,8 @@ public class ST_PuzzleDisplay : MonoBehaviour
 					// attempt to execute a move for this tile.
 					TileDisplayArray[i,j].GetComponent<ST_PuzzleTile>().ExecuteAdditionalMove();
 
-					yield return new WaitForSeconds(0.1f);
-				}
+                    yield return new WaitForSeconds(0.0001f);
+                }
 			}
 		}
 
