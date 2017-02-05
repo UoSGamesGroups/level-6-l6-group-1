@@ -22,6 +22,7 @@ public class CarerNavigation : MonoBehaviour
     public int chaseSpeed;
     public int searchingSpeed;
     public int normalSpeed;
+    public bool lookedAt;
 
     // Use this for initialization
     void Start()
@@ -42,6 +43,13 @@ public class CarerNavigation : MonoBehaviour
     void Update()
     {
         navMeshAgent.updateRotation = true;
+        Debug.Log(playermovement.isPlayerLookingAtCarer());
+        lookedAt = playermovement.isPlayerLookingAtCarer();
+
+        if(!lookedAt && !stopChasing)
+        {
+            GetComponent<MeshRenderer>().enabled = false;
+        }
 
         if (fusebox.lastArray)
         {
@@ -57,7 +65,15 @@ public class CarerNavigation : MonoBehaviour
             foundPlayer = false;
             animation.SetBool("Finding", false);
             navMeshAgent.GetComponent<NavMeshAgent>().speed = normalSpeed;
-            GetComponent<MeshRenderer>().enabled = false;
+           
+            /* do
+             {
+                  if (player.GetComponent<PlayerMovement>().isPlayerLookingAtCarer())
+                   {
+                   GetComponent<MeshRenderer>().enabled = false;
+                  }
+
+             } while (!player.GetComponent<PlayerMovement>().isPlayerLookingAtCarer());*/
         }
         if (playermovement.carerTrigger && !foundPlayer)
         {

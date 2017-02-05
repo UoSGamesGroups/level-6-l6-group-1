@@ -38,6 +38,8 @@ public class PlayerMovement : MonoBehaviour
     static public bool debugPuzzle = true;         // Stops constant animation playing after puzzle completion
     public bool carerTrigger;
     public GameObject memoryItem;
+    public GameObject Carer;
+    public bool playerCanSeeCarer;
 
     void Start()
     {
@@ -119,6 +121,19 @@ public class PlayerMovement : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public bool isPlayerLookingAtCarer()
+    {
+        if (Carer.GetComponent<Renderer>().isVisible)
+        {
+            playerCanSeeCarer = true;
+        }
+        else
+        {
+            playerCanSeeCarer = false;
+        }
+        return playerCanSeeCarer;
     }
 
     void Update()
