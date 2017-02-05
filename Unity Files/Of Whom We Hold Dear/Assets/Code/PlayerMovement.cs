@@ -331,6 +331,6 @@ public class PlayerMovement : MonoBehaviour
         fusebox.CoinInsertedPurpleLight.SetActive(false);
         FuseClickingRestart = 0;
         coinInserted = false;
-        fusebox.LightOff();
+        fusebox.LightsOn(15);
     }
 }

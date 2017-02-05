@@ -89,7 +89,7 @@ public class FuseBox : MonoBehaviour {
         {
             LightShuffle shuf = new LightShuffle();
             shuf.lightIndex = i;
-            shuf.shuffleValue = Random.Range(0, 5000);
+            shuf.shuffleValue = Random.Range(0, 1000);
             list.Add(shuf);
         }
 
@@ -101,6 +101,11 @@ public class FuseBox : MonoBehaviour {
         }
 
         StartCoroutine(Wait(2));
+    }
+
+    public void LightsOn(int waitTimer)
+    {
+        StartCoroutine(Wait(waitTimer));
     }
 
     IEnumerator Wait(int waitTimer)
