@@ -19,6 +19,9 @@ public class CarerNavigation : MonoBehaviour
     public Transform target;
     public Animator animation;
     public bool searching;
+    public int chaseSpeed;
+    public int searchingSpeed;
+    public int normalSpeed;
 
     // Use this for initialization
     void Start()
@@ -44,7 +47,7 @@ public class CarerNavigation : MonoBehaviour
         {
             stopChasing = true;
             CarerLight.SetActive(true);
-            navMeshAgent.GetComponent<NavMeshAgent>().speed = 8;
+            navMeshAgent.GetComponent<NavMeshAgent>().speed = searchingSpeed;
             GetComponent<MeshRenderer>().enabled = true;
         }
         else
@@ -53,7 +56,7 @@ public class CarerNavigation : MonoBehaviour
             CarerLight.SetActive(false);
             foundPlayer = false;
             animation.SetBool("Finding", false);
-            navMeshAgent.GetComponent<NavMeshAgent>().speed = 4;
+            navMeshAgent.GetComponent<NavMeshAgent>().speed = normalSpeed;
             GetComponent<MeshRenderer>().enabled = false;
         }
         if (playermovement.carerTrigger && !foundPlayer)
@@ -63,7 +66,7 @@ public class CarerNavigation : MonoBehaviour
         if (playermovement.carerTrigger && foundPlayer)
         {
             navMeshAgent.SetDestination(player.transform.position);
-            navMeshAgent.GetComponent<NavMeshAgent>().speed = 10;
+            navMeshAgent.GetComponent<NavMeshAgent>().speed = chaseSpeed;
         }
 
         if (stopChasing && !foundPlayer && playermovement.carerTrigger)

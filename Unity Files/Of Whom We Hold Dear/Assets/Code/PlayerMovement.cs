@@ -37,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
     public bool inAnimation;
     static public bool debugPuzzle = true;         // Stops constant animation playing after puzzle completion
     public bool carerTrigger;
+    public GameObject memoryItem;
 
     void Start()
     {
@@ -79,27 +80,44 @@ public class PlayerMovement : MonoBehaviour
 
     public void RespawnLocations()
     {
-        if (enumRespawnLocations == respawnLocations.prologue_epilogue)
+        int index;
+        switch (enumRespawnLocations)
         {
-            move = spawnlocations[2].transform.position;
-            transform.position = move;
-        }
-        else if (enumRespawnLocations == respawnLocations.memory1)
-        {
-            move = spawnlocations[3].transform.position;
-            transform.position = move;
-        }
-        else if (enumRespawnLocations == respawnLocations.memory2 || enumRespawnLocations == respawnLocations.memory3)
-        {
-            int index = UnityEngine.Random.Range(0, 2);
-            move = spawnlocations[index].transform.position;
-            transform.position = move;
-        }
-        else
-        {
-            int index = UnityEngine.Random.Range(0, spawnlocations.Length);
-            move = spawnlocations[index].transform.position;
-            transform.position = move;
+            case respawnLocations.prologue_epilogue:
+                move = spawnlocations[2].transform.position;
+                transform.position = move;
+                break;
+
+            case respawnLocations.memory1:
+                move = spawnlocations[3].transform.position;
+                transform.position = move;
+                break;
+
+            case respawnLocations.memory2:
+                move = spawnlocations[4].transform.position;
+                transform.position = move;
+                break;
+
+            case respawnLocations.memory3:
+                index = UnityEngine.Random.Range(0, 2);
+                move = spawnlocations[index].transform.position;
+                transform.position = move;
+                break;
+
+            case respawnLocations.memory4:
+                index = UnityEngine.Random.Range(0, spawnlocations.Length);
+                move = spawnlocations[index].transform.position;
+                transform.position = move;
+                break;
+
+            case respawnLocations.memory5:
+                index = UnityEngine.Random.Range(0, spawnlocations.Length);
+                move = spawnlocations[index].transform.position;
+                transform.position = move;
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -118,8 +136,7 @@ public class PlayerMovement : MonoBehaviour
             currentCoin.transform.position = coinPos.transform.position;
         }
 
-
-        transform.Rotate(0, 90, 0);
+       // transform.Rotate(0, 90, 0);
 
         if (lockcontrols)
         {
@@ -159,6 +176,8 @@ public class PlayerMovement : MonoBehaviour
             if (debugPuzzle == true)
             {
                 CallAnimations("FallProggession", 10);
+
+                memoryItem.SetActive(true);
                 puzzlecam3.enabled = false;
                 debugPuzzle = false;
             }
