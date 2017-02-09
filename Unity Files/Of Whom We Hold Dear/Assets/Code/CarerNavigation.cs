@@ -122,6 +122,14 @@ public class CarerNavigation : MonoBehaviour
             navMeshAgent.GetComponent<NavMeshAgent>().speed = chaseSpeed;
         }
 
+        if (foundPlayer && navMeshAgent.remainingDistance < 5f)
+        {
+            // do something
+        }
+    }
+
+    void FixedUpdate()
+    {
         if (stopChasing && !foundPlayer && playermovement.carerTrigger)
         {
             animation.SetBool("Finding", true);
@@ -132,20 +140,12 @@ public class CarerNavigation : MonoBehaviour
             {
                 Debug.DrawLine(transform.position, target.position);
 
-                Debug.Log(hit.collider.tag);
-
                 if (hit.collider.tag == "Player")
                 {
                     foundPlayer = true;
                     animation.SetBool("Finding", false);
                 }
-
             }
-        }
-
-        if (foundPlayer && navMeshAgent.remainingDistance < 5f)
-        {
-            // do something
         }
     }
 
