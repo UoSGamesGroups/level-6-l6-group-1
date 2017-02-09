@@ -1,10 +1,10 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
+using System.Collections.Generic;
 
 public class CarerNavigation : MonoBehaviour
 {
-
     public UnityEngine.AI.NavMeshAgent navMeshAgent;
     public GameObject player;
     public Vector3 playerLocation;
@@ -23,6 +23,9 @@ public class CarerNavigation : MonoBehaviour
     public int searchingSpeed;
     public int normalSpeed;
     public bool lookedAt;
+    public GameObject closestNode;
+    public float helpCarerFindTimer;
+    public int posInArray;
 
     // Use this for initialization
     void Start()
@@ -39,11 +42,57 @@ public class CarerNavigation : MonoBehaviour
         return index;
     }
 
+    public GameObject DistanceBetweenPlayerNode()
+    {
+        float lastDistance = 500;
+        int index = 0;
+
+        foreach (var check in carerMovementNodes)
+        {
+            float dist = Vector3.Distance(player.transform.position, check.transform.position);
+
+            if(dist < lastDistance && check.gameObject.transform.position.y >= player.transform.position.y - 5)
+            {
+                closestNode = check.gameObject;
+                lastDistance = dist;
+                posInArray = index;
+            }
+            index++;
+        }
+        lastDistance = 500;
+        return closestNode;
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (!navMeshAgent.pathPending)
+        {
+            if (navMeshAgent.remainingDistance <= 0.2)
+            {
+                nodePosition = getNewTransform();
+            }
+        }
+
+        if (stopChasing && !foundPlayer)
+        {
+            helpCarerFindTimer -= Time.deltaTime;
+        }
+
+        if(helpCarerFindTimer <= 0)
+        {
+            helpCarerFindTimer = 30;
+            DistanceBetweenPlayerNode();
+            nodePosition = posInArray;
+        }
+
+        if (playermovement.carerTrigger && !foundPlayer)
+        {
+            navMeshAgent.SetDestination(carerMovementNodes[nodePosition].position);
+        }
+
         navMeshAgent.updateRotation = true;
-        Debug.Log(playermovement.isPlayerLookingAtCarer());
+
         lookedAt = playermovement.isPlayerLookingAtCarer();
 
         if(!lookedAt && !stopChasing)
@@ -65,20 +114,8 @@ public class CarerNavigation : MonoBehaviour
             foundPlayer = false;
             animation.SetBool("Finding", false);
             navMeshAgent.GetComponent<NavMeshAgent>().speed = normalSpeed;
-           
-            /* do
-             {
-                  if (player.GetComponent<PlayerMovement>().isPlayerLookingAtCarer())
-                   {
-                   GetComponent<MeshRenderer>().enabled = false;
-                  }
+        }
 
-             } while (!player.GetComponent<PlayerMovement>().isPlayerLookingAtCarer());*/
-        }
-        if (playermovement.carerTrigger && !foundPlayer)
-        {
-            navMeshAgent.SetDestination(carerMovementNodes[nodePosition].position);
-        }
         if (playermovement.carerTrigger && foundPlayer)
         {
             navMeshAgent.SetDestination(player.transform.position);
@@ -110,12 +147,6 @@ public class CarerNavigation : MonoBehaviour
         {
             // do something
         }
-
-        if (navMeshAgent.remainingDistance < 0.2f)
-        {
-            nodePosition = getNewTransform();
-        }
-
     }
 
     void OnTriggerEnter(Collider other)
