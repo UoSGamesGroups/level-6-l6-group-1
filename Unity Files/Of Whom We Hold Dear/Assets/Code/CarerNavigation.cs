@@ -26,6 +26,10 @@ public class CarerNavigation : MonoBehaviour
     public GameObject closestNode;
     public float helpCarerFindTimer;
     public int posInArray;
+    public float loseSightOfPlayer;
+
+    public Transform TopCapsule;
+    public Transform BottomCapsule;
 
     // Use this for initialization
     void Start()
@@ -99,7 +103,7 @@ public class CarerNavigation : MonoBehaviour
         {
             GetComponent<MeshRenderer>().enabled = false;
         }
-
+        
         if (fusebox.lastArray)
         {
             stopChasing = true;
@@ -114,6 +118,12 @@ public class CarerNavigation : MonoBehaviour
             foundPlayer = false;
             animation.SetBool("Finding", false);
             navMeshAgent.GetComponent<NavMeshAgent>().speed = normalSpeed;
+
+            if(lookedAt)
+            {
+                navMeshAgent.GetComponent<NavMeshAgent>().speed = 0;
+                transform.LookAt(player.transform.position);
+            }
         }
 
         if (playermovement.carerTrigger && foundPlayer)
@@ -124,28 +134,51 @@ public class CarerNavigation : MonoBehaviour
 
         if (foundPlayer && navMeshAgent.remainingDistance < 5f)
         {
-            // do something
+            ArrivedAtDestination();
         }
+    }
+
+    void ArrivedAtDestination()
+    {
+
+        //
+
     }
 
     void FixedUpdate()
     {
-        if (stopChasing && !foundPlayer && playermovement.carerTrigger)
+        if (stopChasing && playermovement.carerTrigger)
         {
-            animation.SetBool("Finding", true);
-            RaycastHit hit;
-            Ray newRay = new Ray(transform.position, transform.forward);
-
-            if (Physics.Raycast(newRay, out hit, 500))
+            if(!foundPlayer)
             {
-                Debug.DrawLine(transform.position, target.position);
+                animation.SetBool("Finding", true);
+            }
 
+            RaycastHit hit;
+            Vector3 point1 = TopCapsule.position;
+            Vector3 point2 = BottomCapsule.position;
+            
+            if (Physics.CapsuleCast(point1,point2, 3f, transform.forward,out hit, 200))
+            {
+                //Debug.
+                Debug.DrawLine(transform.position, hit.transform.position);
+                Debug.Log(hit.collider.tag);
                 if (hit.collider.tag == "Player")
                 {
                     foundPlayer = true;
                     animation.SetBool("Finding", false);
+                    Debug.Log(hit.collider.tag);
+                }
+                if(foundPlayer && hit.collider.tag != "Player")
+                {
+                    loseSightOfPlayer -= Time.deltaTime;
                 }
             }
+        }
+        if(loseSightOfPlayer <= 0)
+        {
+            foundPlayer = false;
+            loseSightOfPlayer = 10;
         }
     }
 
