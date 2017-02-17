@@ -18,11 +18,13 @@ public class ST_PuzzleDisplay : MonoBehaviour
     private List<Vector3>  DisplayPositions = new List<Vector3>();
 	private Vector3 Scale;                                          // position and scale values
     private Vector3 Position;
+    public FuseBox fusebox;
 
 	void Start () 
 	{
-		 // Creates the puzzle
-		CreatePuzzleTiles();  
+        fusebox = GameObject.FindGameObjectWithTag("Fusebox").GetComponent<FuseBox>();
+        // Creates the puzzle
+        CreatePuzzleTiles();  
                      
         // Mixes the puzzle
 		StartCoroutine(JugglePuzzle());     
@@ -197,9 +199,9 @@ public class ST_PuzzleDisplay : MonoBehaviour
 		if(Complete)
 		{
 			Debug.Log("Puzzle Complete!");
-            
+            fusebox.LightOff();
+            fusebox.puzzleCompleted = true;  
         }
-
 		yield return null;
 	}
 

@@ -141,10 +141,11 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown("r") && holdingCoin)
         {
             coinPos.DetachChildren();
-            currentCoin.transform.position = transform.position;
             currentCoin.GetComponent<Rigidbody>().useGravity = true;
+            currentCoin.layer = 11;
             currentCoin = null;
             holdingCoin = false;
+
         }
         if (holdingCoin && currentCoin != null)
         {
@@ -231,6 +232,7 @@ public class PlayerMovement : MonoBehaviour
                 other.gameObject.GetComponent<Rigidbody>().useGravity = false;
                 holdingCoin = true;
                 currentCoin = other.gameObject;
+                currentCoin.layer = 12;
 
                 if (other.gameObject.tag == "TwoPound")
                 {
