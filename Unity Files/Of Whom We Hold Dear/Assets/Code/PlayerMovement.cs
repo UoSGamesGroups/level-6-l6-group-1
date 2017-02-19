@@ -40,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject memoryItem;
     public GameObject Carer;
     public bool playerCanSeeCarer;
+    public Vector3 scaleSize;
 
     void Start()
     {
@@ -141,18 +142,16 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown("r") && holdingCoin)
         {
             coinPos.DetachChildren();
+            currentCoin.transform.localScale = scaleSize;
             currentCoin.GetComponent<Rigidbody>().useGravity = true;
             currentCoin.layer = 11;
             currentCoin = null;
             holdingCoin = false;
-
         }
         if (holdingCoin && currentCoin != null)
         {
             currentCoin.transform.position = coinPos.transform.position;
         }
-
-       // transform.Rotate(0, 90, 0);
 
         if (lockcontrols)
         {
@@ -168,7 +167,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
         }
-        if (FuseClickingRestart >= 20)
+        if (FuseClickingRestart >= 20 && fusebox.lastArray)
         {
             if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.TwoPound)
             {
@@ -181,6 +180,24 @@ public class PlayerMovement : MonoBehaviour
             if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.FiftyPence)
             {
                 RestartLights(25);
+            }
+        }else if(FuseClickingRestart >= 20 && !fusebox.lastArray)
+        {
+            FuseClickingRestart = 0;
+            fusebox.CoinInsertedPurpleLight.SetActive(false);
+            coinInserted = false;
+
+            if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.TwoPound)
+            {
+                fusebox.timer += 100;
+            }
+            if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.Pound)
+            {
+                fusebox.timer += 50;
+            }
+            if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.FiftyPence)
+            {
+                fusebox.timer += 25;
             }
         }
         if (puzzlecam3.enabled == false)
@@ -227,12 +244,13 @@ public class PlayerMovement : MonoBehaviour
         if (other.gameObject.tag == "TwoPound" || other.gameObject.tag == "Pound" || other.gameObject.tag == "FiftyPence")
         {
             if (Input.GetKeyDown("e") && !holdingCoin)
-            {
-                other.gameObject.transform.parent = coinPos.transform;
-                other.gameObject.GetComponent<Rigidbody>().useGravity = false;
-                holdingCoin = true;
+            {  
                 currentCoin = other.gameObject;
                 currentCoin.layer = 12;
+                scaleSize = currentCoin.transform.localScale;
+                holdingCoin = true;
+                currentCoin.transform.parent = coinPos.transform;
+                currentCoin.GetComponent<Rigidbody>().useGravity = false;   
 
                 if (other.gameObject.tag == "TwoPound")
                 {
@@ -275,7 +293,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (other.gameObject.tag == "Fusebox")
         {
-            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.TwoPound && !fusebox.EngagedGreenLight.activeSelf && !coinInserted && fusebox.lastArray && holdingCoin)
+            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.TwoPound && fusebox.timer <= 15 && !coinInserted && holdingCoin)
             {
                 holdingCoin = false;          
                 fusebox.CoinInsertedPurpleLight.SetActive(true);
@@ -283,7 +301,7 @@ public class PlayerMovement : MonoBehaviour
                 FuseBoxCurrentCoin = fuseBoxCurrentCoin.TwoPound;
                 Destroy(currentCoin);
             }
-            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.FiftyPence && !fusebox.EngagedGreenLight.activeSelf && !coinInserted && fusebox.lastArray && holdingCoin)
+            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.FiftyPence && fusebox.timer <= 15 && !coinInserted && holdingCoin)
             {
                 holdingCoin = false;
                 fusebox.CoinInsertedPurpleLight.SetActive(true);
@@ -291,7 +309,7 @@ public class PlayerMovement : MonoBehaviour
                 FuseBoxCurrentCoin = fuseBoxCurrentCoin.FiftyPence;
                 Destroy(currentCoin);
             }
-            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.Pound && !fusebox.EngagedGreenLight.activeSelf && !coinInserted && fusebox.lastArray && holdingCoin)
+            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.Pound && fusebox.timer <= 15 && !coinInserted && holdingCoin)
             {
                 holdingCoin = false;
                 fusebox.CoinInsertedPurpleLight.SetActive(true);
@@ -328,10 +346,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void RestartLights(int timerAddidition)
     {
+        FuseClickingRestart = 0;
         fusebox.timer = timerAddidition;
         fusebox.callOnce = true;
         fusebox.CoinInsertedPurpleLight.SetActive(false);
-        FuseClickingRestart = 0;
         coinInserted = false;
         fusebox.LightsOn(15);
     }
