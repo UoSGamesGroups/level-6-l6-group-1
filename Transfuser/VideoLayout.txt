@@ -1,0 +1,6 @@
+Voice
+
+Introduction:30 seconds = introduction to the group, our roles, game name, log line
+Gameplay: 30 seconds = some segments of the game (the carer, inciting incidient, puzzle)
+Future tasks: 30 seconds = What plans we have, what to change or implement
+Business plan: 30 seconds = release on steam, use our blogs to advertise, use YouTube to advertise
