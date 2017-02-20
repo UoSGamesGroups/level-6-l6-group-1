@@ -171,15 +171,15 @@ public class PlayerMovement : MonoBehaviour
         {
             if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.TwoPound)
             {
-                RestartLights(100);
+                RestartLights(180);
             }
             if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.Pound)
             {
-                RestartLights(50);
+                RestartLights(90);
             }
             if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.FiftyPence)
             {
-                RestartLights(25);
+                RestartLights(45);
             }
         }else if(FuseClickingRestart >= 20 && !fusebox.lastArray)
         {
@@ -189,15 +189,15 @@ public class PlayerMovement : MonoBehaviour
 
             if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.TwoPound)
             {
-                fusebox.timer += 100;
+                fusebox.timer += 180;
             }
             if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.Pound)
             {
-                fusebox.timer += 50;
+                fusebox.timer += 90;
             }
             if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.FiftyPence)
             {
-                fusebox.timer += 25;
+                fusebox.timer += 45;
             }
         }
         if (puzzlecam3.enabled == false)
@@ -208,10 +208,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (debugPuzzle == true)
             {
-                CallAnimations("FallProggession", 10);
-
                 memoryItem.SetActive(true);
-                puzzlecam3.enabled = false;
                 debugPuzzle = false;
             }
         }
@@ -335,11 +332,8 @@ public class PlayerMovement : MonoBehaviour
         if (other.gameObject.tag == "SignificantItem")              // If player presses E when in trigger of significant item, activates or deactivates camera to puzzle
         {
             if (Input.GetKeyDown("e"))
-            {
-                inAnimation = !inAnimation;
-                puzzlecam3.enabled = !puzzlecam3.enabled;
-                lockcontrols = !lockcontrols;
-                Cursor.lockState = CursorLockMode.None;
+            {              
+                PuzzleCameraSwap();
             }
         }
     }
@@ -352,5 +346,12 @@ public class PlayerMovement : MonoBehaviour
         fusebox.CoinInsertedPurpleLight.SetActive(false);
         coinInserted = false;
         fusebox.LightsOn(15);
+    }
+    public void PuzzleCameraSwap()
+    {
+        puzzlecam3.enabled = !puzzlecam3.enabled;
+        inAnimation = !inAnimation;
+        lockcontrols = !lockcontrols;
+        Cursor.lockState = CursorLockMode.None;
     }
 }

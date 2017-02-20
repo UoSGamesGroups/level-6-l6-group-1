@@ -16,6 +16,7 @@ public class FuseBox : MonoBehaviour {
     public GameObject EngagedGreenLight;
     public GameObject CoinInsertedPurpleLight;
     public GameObject FuseBoxFailRedLight;
+    public GameObject timerText;
     public float timer;
     public bool callOnce;
     public bool lastArray;
@@ -53,7 +54,6 @@ public class FuseBox : MonoBehaviour {
        
         if (timer > 0 && playermovement.enumRespawnLocations != PlayerMovement.respawnLocations.prologue_epilogue)
         {
-            EngagedGreenLight.SetActive(true);
             FuseBoxFailRedLight.SetActive(false);
             resetRedLight.SetActive(false);
 

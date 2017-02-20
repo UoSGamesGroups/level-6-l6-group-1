@@ -19,6 +19,7 @@ public class ST_PuzzleDisplay : MonoBehaviour
 	private Vector3 Scale;                                          // position and scale values
     private Vector3 Position;
     public FuseBox fusebox;
+    public PlayerMovement playermovement;
 
 	void Start () 
 	{
@@ -200,12 +201,15 @@ public class ST_PuzzleDisplay : MonoBehaviour
 		{
 			Debug.Log("Puzzle Complete!");
             fusebox.LightOff();
-            fusebox.puzzleCompleted = true;  
+            fusebox.timerText.SetActive(false);
+            playermovement.PuzzleCameraSwap();
+
+            Complete = false;   
         }
 		yield return null;
 	}
 
-	private Vector2 ConvertIndexToGrid(int index)
+    private Vector2 ConvertIndexToGrid(int index)
 	{
 		int WidthIndex = index;
 		int HeightIndex = 0;
