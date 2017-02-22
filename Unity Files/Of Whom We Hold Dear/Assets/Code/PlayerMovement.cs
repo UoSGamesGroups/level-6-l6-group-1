@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 20.0f;
     public Transform[] spawnlocations;
 
-
+    public Text nameText;               // Text for prompting player of an object
     public GameObject currentCoin;
     public Transform coinPos;
     public bool holdingCoin;
@@ -41,6 +42,11 @@ public class PlayerMovement : MonoBehaviour
     public GameObject Carer;
     public bool playerCanSeeCarer;
     public Vector3 scaleSize;
+
+    void Awake()
+    {
+        nameText = GameObject.Find("PromptText").GetComponent<Text>();
+    }
 
     void Start()
     {
@@ -240,14 +246,15 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.gameObject.tag == "TwoPound" || other.gameObject.tag == "Pound" || other.gameObject.tag == "FiftyPence")
         {
+            nameText.text = "Press E to pickup";
             if (Input.GetKeyDown("e") && !holdingCoin)
-            {  
+            {
                 currentCoin = other.gameObject;
                 currentCoin.layer = 12;
                 scaleSize = currentCoin.transform.localScale;
                 holdingCoin = true;
                 currentCoin.transform.parent = coinPos.transform;
-                currentCoin.GetComponent<Rigidbody>().useGravity = false;   
+                currentCoin.GetComponent<Rigidbody>().useGravity = false;
 
                 if (other.gameObject.tag == "TwoPound")
                 {
@@ -265,6 +272,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (other.gameObject.tag == "ResetLights")
         {
+            nameText.text = "Press E to interact";
             if (Input.GetKeyDown("e") && fusebox.lastArray)
             {
                 if (coinInserted)
@@ -290,9 +298,10 @@ public class PlayerMovement : MonoBehaviour
         }
         if (other.gameObject.tag == "Fusebox")
         {
+            nameText.text = "Please insert coin";
             if (Input.GetKeyDown("e") && CoinSelected == coinSelected.TwoPound && fusebox.timer <= 15 && !coinInserted && holdingCoin)
             {
-                holdingCoin = false;          
+                holdingCoin = false;
                 fusebox.CoinInsertedPurpleLight.SetActive(true);
                 coinInserted = true;
                 FuseBoxCurrentCoin = fuseBoxCurrentCoin.TwoPound;
@@ -317,6 +326,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (other.gameObject.tag == "Fusebox" && coinInserted)
         {
+            nameText.text = "Click to crank handle";
             if (Input.GetMouseButtonDown(0))
             {
                 FuseClickingRestart++;
@@ -331,13 +341,20 @@ public class PlayerMovement : MonoBehaviour
         }
         if (other.gameObject.tag == "SignificantItem")              // If player presses E when in trigger of significant item, activates or deactivates camera to puzzle
         {
+            nameText.text = "Press E to Interact";
+
             if (Input.GetKeyDown("e"))
-            {              
+            {
                 PuzzleCameraSwap();
             }
         }
     }
 
+    // When player leaves a trigger, the text will reset
+    void OnTriggerExit ()
+    {
+        nameText.text = "";
+    }
     public void RestartLights(int timerAddidition)
     {
         FuseClickingRestart = 0;
@@ -349,6 +366,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void PuzzleCameraSwap()
     {
+        nameText.enabled = !nameText.enabled;
         puzzlecam3.enabled = !puzzlecam3.enabled;
         inAnimation = !inAnimation;
         lockcontrols = !lockcontrols;
