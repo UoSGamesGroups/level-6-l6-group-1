@@ -187,7 +187,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 RestartLights(45);
             }
-        }else if(FuseClickingRestart >= 20 && !fusebox.lastArray)
+        }else if(FuseClickingRestart >= 20 && !fusebox.lastArray && fusebox.EngagedGreenLight.activeSelf)
         {
             FuseClickingRestart = 0;
             fusebox.CoinInsertedPurpleLight.SetActive(false);
@@ -358,11 +358,8 @@ public class PlayerMovement : MonoBehaviour
     public void RestartLights(int timerAddidition)
     {
         FuseClickingRestart = 0;
-        fusebox.timer = timerAddidition;
-        fusebox.callOnce = true;
-        fusebox.CoinInsertedPurpleLight.SetActive(false);
         coinInserted = false;
-        fusebox.LightsOn(15);
+        fusebox.LightsOn(timerAddidition);
     }
     public void PuzzleCameraSwap()
     {

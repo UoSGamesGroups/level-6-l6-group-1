@@ -41,9 +41,9 @@ public class FuseBox : MonoBehaviour {
 
         if (timer <= 0 && callOnce)
         {
+            EngagedGreenLight.SetActive(false);
             LightOff();
             callOnce = false;
-            EngagedGreenLight.SetActive(false);
         }
 
         if(lastArray) 
@@ -101,15 +101,18 @@ public class FuseBox : MonoBehaviour {
             Swap(ref lightArray[i], ref lightArray[list[i].lightIndex]);
         }
 
-        StartCoroutine(Wait(2));
+        StartCoroutine(Wait());
     }
 
-    public void LightsOn(int waitTimer)
+    public void LightsOn(int timerAddition)
     {
-        StartCoroutine(Wait(waitTimer));
+        timer = timerAddition;
+        callOnce = true;
+        CoinInsertedPurpleLight.SetActive(false);
+        StartCoroutine(Wait());
     }
 
-    IEnumerator Wait(int waitTimer)
+    IEnumerator Wait()
     {
         foreach (GameObject light in lightArray)
         {
