@@ -42,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject Carer;
     public bool playerCanSeeCarer;
     public Vector3 scaleSize;
+    public GameObject CrankHandle;                  // Handle for fuse box
 
     void Awake()
     {
@@ -246,7 +247,15 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.gameObject.tag == "TwoPound" || other.gameObject.tag == "Pound" || other.gameObject.tag == "FiftyPence")
         {
+            if (other.gameObject.GetComponent<Renderer>().isVisible && !holdingCoin)
+            {
             nameText.text = "Press E to pickup";
+            }
+            else
+            {
+                nameText.text = "";
+            }
+            
             if (Input.GetKeyDown("e") && !holdingCoin)
             {
                 currentCoin = other.gameObject;
@@ -268,6 +277,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     CoinSelected = coinSelected.Pound;
                 }
+             
             }
         }
         if (other.gameObject.tag == "ResetLights")
@@ -330,6 +340,7 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 FuseClickingRestart++;
+                CrankHandle.transform.Rotate(0,0,18);
             }
         }
         if (other.gameObject.tag == "TestSceneMovement")
