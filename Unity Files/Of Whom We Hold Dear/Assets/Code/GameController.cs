@@ -15,6 +15,8 @@ public class GameController : MonoBehaviour {
     public List<LocalController> LocalControllers;
     public List<GameObject> spawnedFurniture;
 
+    public List<GameObject> coinsGameobject;
+
     public List<GameObject> Chairs;
     public List<GameObject> Bed;
     public List<GameObject> ChestDrawers;
