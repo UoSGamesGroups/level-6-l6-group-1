@@ -282,9 +282,17 @@ public class PlayerMovement : MonoBehaviour
         }
         if (other.gameObject.tag == "ResetLights")
         {
+            if (other.gameObject.GetComponent<Renderer>().isVisible)
+            {
             nameText.text = "Press E to interact";
+            }
+            else
+            {
+                nameText.text = "";
+            }
             if (Input.GetKeyDown("e") && fusebox.lastArray)
             {
+                
                 if (coinInserted)
                 {
                     if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.TwoPound)
@@ -308,8 +316,16 @@ public class PlayerMovement : MonoBehaviour
         }
         if (other.gameObject.tag == "Fusebox")
         {
-            nameText.text = "Please insert coin";
-            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.TwoPound && fusebox.timer <= 15 && !coinInserted && holdingCoin)
+            if (other.gameObject.GetComponent<Renderer>().isVisible)
+            {
+               nameText.text = "Please insert coin";
+            }
+           else
+            {
+               nameText.text = "";
+
+            }
+            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.TwoPound && fusebox.timer <= 15 && !coinInserted && holdingCoin )
             {
                 holdingCoin = false;
                 fusebox.CoinInsertedPurpleLight.SetActive(true);
@@ -336,7 +352,15 @@ public class PlayerMovement : MonoBehaviour
         }
         if (other.gameObject.tag == "Fusebox" && coinInserted)
         {
-            nameText.text = "Click to crank handle";
+            if (other.gameObject.GetComponent<Renderer>().isVisible)
+            {
+               nameText.text = "Click to crank handle";
+            }
+            else
+            {
+                nameText.text = "";
+            }
+
             if (Input.GetMouseButtonDown(0))
             {
                 FuseClickingRestart++;
@@ -352,7 +376,14 @@ public class PlayerMovement : MonoBehaviour
         }
         if (other.gameObject.tag == "SignificantItem")              // If player presses E when in trigger of significant item, activates or deactivates camera to puzzle
         {
-            nameText.text = "Press E to Interact";
+            if (other.gameObject.GetComponent<Renderer>().isVisible)
+            {
+                nameText.text = "Press E to Interact";
+            }
+            else
+            {
+                nameText.text = "";
+            }
 
             if (Input.GetKeyDown("e"))
             {
