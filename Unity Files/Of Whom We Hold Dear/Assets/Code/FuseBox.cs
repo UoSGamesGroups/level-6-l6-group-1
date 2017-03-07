@@ -24,7 +24,10 @@ public class FuseBox : MonoBehaviour {
     public TextMesh CountTimer;
     public PlayerMovement playermovement;
     public bool puzzleCompleted;
+    public AudioClip SoundLightOn;
+    public AudioClip SoundLightOff;
 
+    private AudioSource Source;
 
     void Start ()
     {
@@ -34,6 +37,7 @@ public class FuseBox : MonoBehaviour {
         EngagedGreenLight.SetActive(true);
         FuseBoxFailRedLight.SetActive(false);
         resetRedLight.SetActive(false);
+        Source = GetComponent<AudioSource>();
     }
 	void Update ()
     {
@@ -120,11 +124,13 @@ public class FuseBox : MonoBehaviour {
             {
                 yield return new WaitForSeconds(0.3f);
                 light.SetActive(false);
+                Source.PlayOneShot(SoundLightOff);
                 continue;
             }
             else
                 yield return new WaitForSeconds(0.3f);
                 light.SetActive(true);
+                Source.PlayOneShot(SoundLightOn);
         } 
 
         if(lightArray[lightArray.Length-1].activeSelf == false) 

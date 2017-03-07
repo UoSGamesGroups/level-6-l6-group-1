@@ -43,6 +43,9 @@ public class PlayerMovement : MonoBehaviour
     public bool playerCanSeeCarer;
     public Vector3 scaleSize;
     public GameObject CrankHandle;                  // Handle for fuse box
+    public AudioClip HandleCrank;
+
+    private AudioSource Source;
 
     void Awake()
     {
@@ -57,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
         cam1.enabled = true;
         cam2.enabled = false;
 
+        Source = GetComponent<AudioSource>();
         gamecontroller = GameObject.FindGameObjectWithTag("NoticeBoard").GetComponent<GameController>();
         fusebox = GameObject.FindGameObjectWithTag("Fusebox").GetComponent<FuseBox>();
         RespawnLocations();
@@ -365,6 +369,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 FuseClickingRestart++;
                 CrankHandle.transform.Rotate(0,0,18);
+                Source.PlayOneShot(HandleCrank);
             }
         }
         if (other.gameObject.tag == "TestSceneMovement")

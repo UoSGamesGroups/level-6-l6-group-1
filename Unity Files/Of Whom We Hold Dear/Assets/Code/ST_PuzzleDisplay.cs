@@ -21,6 +21,10 @@ public class ST_PuzzleDisplay : MonoBehaviour
     public FuseBox fusebox;
     public PlayerMovement playermovement;
 
+    public AudioClip CompleteSound;                                // Will play when complete
+
+    private AudioSource Source;
+
 	void Start () 
 	{
         fusebox = GameObject.FindGameObjectWithTag("Fusebox").GetComponent<FuseBox>();
@@ -28,8 +32,9 @@ public class ST_PuzzleDisplay : MonoBehaviour
         CreatePuzzleTiles();  
                      
         // Mixes the puzzle
-		StartCoroutine(JugglePuzzle());     
+		StartCoroutine(JugglePuzzle());
 
+        Source = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -203,7 +208,7 @@ public class ST_PuzzleDisplay : MonoBehaviour
             fusebox.LightOff();
             fusebox.timerText.SetActive(false);
             playermovement.PuzzleCameraSwap();
-
+            Source.PlayOneShot(CompleteSound);
             Complete = false;   
         }
 		yield return null;
