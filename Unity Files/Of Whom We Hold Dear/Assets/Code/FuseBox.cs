@@ -69,7 +69,7 @@ public class FuseBox : MonoBehaviour {
                 FuseBoxFailRedLight.SetActive(false);
                 resetRedLight.SetActive(false);
             }
-            else if(timer >= 0 && playermovement.enumRespawnLocations == PlayerMovement.respawnLocations.memory3 || playermovement.enumRespawnLocations == PlayerMovement.respawnLocations.memory5 || playermovement.enumRespawnLocations == PlayerMovement.respawnLocations.memory5)
+            else if(timer >= 0 && playermovement.enumRespawnLocations == PlayerMovement.respawnLocations.memory1 || playermovement.enumRespawnLocations == PlayerMovement.respawnLocations.memory3 || playermovement.enumRespawnLocations == PlayerMovement.respawnLocations.memory5 || playermovement.enumRespawnLocations == PlayerMovement.respawnLocations.memory5)
             {
                 timer -= Time.deltaTime;
                 EngagedGreenLight.SetActive(true);
