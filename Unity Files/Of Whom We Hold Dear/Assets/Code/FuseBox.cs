@@ -16,6 +16,7 @@ public class FuseBox : MonoBehaviour {
     public GameObject EngagedGreenLight;
     public GameObject CoinInsertedPurpleLight;
     public GameObject FuseBoxFailRedLight;
+    public GameObject noticeBoardLight;
     public GameObject timerText;
     public float timer;
     public bool callOnce;
@@ -104,7 +105,6 @@ public class FuseBox : MonoBehaviour {
         {
             Swap(ref lightArray[i], ref lightArray[list[i].lightIndex]);
         }
-
         StartCoroutine(Wait());
     }
 
@@ -136,9 +136,11 @@ public class FuseBox : MonoBehaviour {
         if(lightArray[lightArray.Length-1].activeSelf == false) 
         {
             lastArray = true;
+            noticeBoardLight.SetActive(true);
         } else {
 
             lastArray = false;
+            noticeBoardLight.SetActive(false);
         }
 
     }
