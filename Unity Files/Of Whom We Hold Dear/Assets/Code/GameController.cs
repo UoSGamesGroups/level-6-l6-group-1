@@ -98,7 +98,7 @@ public class GameController : MonoBehaviour {
 // Update is called once per frame
 void Update () {
 
-		CountTimer.text = timer.ToString("F1");
+		//CountTimer.text = timer.ToString("F1");
 
 		if (timer >= 0 && playermovement.enumRespawnLocations != PlayerMovement.respawnLocations.prologue_epilogue && playermovement.enumRespawnLocations != PlayerMovement.respawnLocations.memory1) {
 			timer -= Time.deltaTime;

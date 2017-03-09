@@ -124,13 +124,13 @@ public class FuseBox : MonoBehaviour {
             {
                 yield return new WaitForSeconds(0.3f);
                 light.SetActive(false);
-                Source.PlayOneShot(SoundLightOff);
+                AudioSource.PlayClipAtPoint(SoundLightOff, light.transform.position);
                 continue;
             }
             else
                 yield return new WaitForSeconds(0.3f);
                 light.SetActive(true);
-                Source.PlayOneShot(SoundLightOn);
+                AudioSource.PlayClipAtPoint(SoundLightOn, light.transform.position);
         } 
 
         if(lightArray[lightArray.Length-1].activeSelf == false) 
