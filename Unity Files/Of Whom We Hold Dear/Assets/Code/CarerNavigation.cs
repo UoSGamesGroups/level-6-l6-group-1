@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 public class CarerNavigation : MonoBehaviour
@@ -134,15 +135,13 @@ public class CarerNavigation : MonoBehaviour
 
         if (foundPlayer && navMeshAgent.remainingDistance < 5f)
         {
-            ArrivedAtDestination();
+            PlayerCaught();
         }
     }
 
-    void ArrivedAtDestination()
+    void PlayerCaught()
     {
-
-        //
-
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     void FixedUpdate()

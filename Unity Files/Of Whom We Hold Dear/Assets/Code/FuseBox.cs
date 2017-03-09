@@ -16,6 +16,7 @@ public class FuseBox : MonoBehaviour {
     public GameObject EngagedGreenLight;
     public GameObject CoinInsertedPurpleLight;
     public GameObject FuseBoxFailRedLight;
+    public GameObject noticeBoardLight;
     public GameObject timerText;
     public float timer;
     public bool callOnce;
@@ -104,7 +105,6 @@ public class FuseBox : MonoBehaviour {
         {
             Swap(ref lightArray[i], ref lightArray[list[i].lightIndex]);
         }
-
         StartCoroutine(Wait());
     }
 
@@ -124,21 +124,23 @@ public class FuseBox : MonoBehaviour {
             {
                 yield return new WaitForSeconds(0.3f);
                 light.SetActive(false);
-                Source.PlayOneShot(SoundLightOff);
+                AudioSource.PlayClipAtPoint(SoundLightOff, light.transform.position);
                 continue;
             }
             else
                 yield return new WaitForSeconds(0.3f);
                 light.SetActive(true);
-                Source.PlayOneShot(SoundLightOn);
+                AudioSource.PlayClipAtPoint(SoundLightOn, light.transform.position);
         } 
 
         if(lightArray[lightArray.Length-1].activeSelf == false) 
         {
             lastArray = true;
+            noticeBoardLight.SetActive(true);
         } else {
 
             lastArray = false;
+            noticeBoardLight.SetActive(false);
         }
 
     }
