@@ -43,7 +43,12 @@ public class PlayerMovement : MonoBehaviour
     public bool playerCanSeeCarer;
     public Vector3 scaleSize;
     public GameObject CrankHandle;                  // Handle for fuse box
+
     public AudioClip HandleCrank;
+    public AudioClip CoinPickup;
+    public AudioClip CoinInSound;
+    public AudioClip EmergencyHandle;
+    public AudioClip LowPowerSound;
 
     private AudioSource Source;
 
@@ -268,6 +273,7 @@ public class PlayerMovement : MonoBehaviour
                 holdingCoin = true;
                 currentCoin.transform.parent = coinPos.transform;
                 currentCoin.GetComponent<Rigidbody>().useGravity = false;
+                Source.PlayOneShot(CoinPickup);
 
                 if (other.gameObject.tag == "TwoPound")
                 {
@@ -299,6 +305,7 @@ public class PlayerMovement : MonoBehaviour
                 
                 if (coinInserted)
                 {
+                   
                     if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.TwoPound)
                     {
                         Instantiate(CoinTypes[0], ReturnCoin.transform.position, Quaternion.identity);
@@ -314,7 +321,7 @@ public class PlayerMovement : MonoBehaviour
                         Instantiate(CoinTypes[2], ReturnCoin.transform.position, Quaternion.identity);
                     }
                 }
-
+                Source.PlayOneShot(EmergencyHandle);
                 RestartLights(15);
             }
         }
@@ -336,6 +343,7 @@ public class PlayerMovement : MonoBehaviour
                 coinInserted = true;
                 FuseBoxCurrentCoin = fuseBoxCurrentCoin.TwoPound;
                 Destroy(currentCoin);
+                Source.PlayOneShot(CoinInSound);
             }
             if (Input.GetKeyDown("e") && CoinSelected == coinSelected.FiftyPence && fusebox.timer <= 15 && !coinInserted && holdingCoin)
             {
@@ -344,6 +352,7 @@ public class PlayerMovement : MonoBehaviour
                 coinInserted = true;
                 FuseBoxCurrentCoin = fuseBoxCurrentCoin.FiftyPence;
                 Destroy(currentCoin);
+                Source.PlayOneShot(CoinInSound);
             }
             if (Input.GetKeyDown("e") && CoinSelected == coinSelected.Pound && fusebox.timer <= 15 && !coinInserted && holdingCoin)
             {
@@ -352,6 +361,7 @@ public class PlayerMovement : MonoBehaviour
                 coinInserted = true;
                 FuseBoxCurrentCoin = fuseBoxCurrentCoin.Pound;
                 Destroy(currentCoin);
+                Source.PlayOneShot(CoinInSound);
             }
         }
         if (other.gameObject.tag == "Fusebox" && coinInserted)

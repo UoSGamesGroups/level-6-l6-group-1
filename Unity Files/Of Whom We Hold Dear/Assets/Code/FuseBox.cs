@@ -18,6 +18,7 @@ public class FuseBox : MonoBehaviour {
     public GameObject FuseBoxFailRedLight;
     public GameObject noticeBoardLight;
     public GameObject timerText;
+    public GameObject FuseBoxObject;
     public float timer;
     public bool callOnce;
     public bool lastArray;
@@ -25,8 +26,13 @@ public class FuseBox : MonoBehaviour {
     public TextMesh CountTimer;
     public PlayerMovement playermovement;
     public bool puzzleCompleted;
+    public bool WarnNoise = true;
+
     public AudioClip SoundLightOn;
     public AudioClip SoundLightOff;
+    public AudioClip GeneratorOn;
+    public AudioClip GeneratorOff;
+    public AudioClip LowPowerSound;
 
     private AudioSource Source;
 
@@ -50,7 +56,11 @@ public class FuseBox : MonoBehaviour {
             LightOff();
             callOnce = false;
         }
-
+        if (timer <= 15 && WarnNoise)
+        {
+            AudioSource.PlayClipAtPoint(LowPowerSound, FuseBoxObject.transform.position);
+            WarnNoise = false;
+        }
         if(lastArray) 
         {
             FuseBoxFailRedLight.SetActive(true);
@@ -106,6 +116,7 @@ public class FuseBox : MonoBehaviour {
             Swap(ref lightArray[i], ref lightArray[list[i].lightIndex]);
         }
         StartCoroutine(Wait());
+        AudioSource.PlayClipAtPoint(GeneratorOff, FuseBoxObject.transform.position);
     }
 
     public void LightsOn(int timerAddition)
@@ -114,6 +125,9 @@ public class FuseBox : MonoBehaviour {
         callOnce = true;
         CoinInsertedPurpleLight.SetActive(false);
         StartCoroutine(Wait());
+        WarnNoise = true;
+        
+        AudioSource.PlayClipAtPoint(GeneratorOn, FuseBoxObject.transform.position);
     }
 
     IEnumerator Wait()
