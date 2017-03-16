@@ -336,6 +336,15 @@ public class PlayerMovement : MonoBehaviour
                nameText.text = "";
 
             }
+            if (holdingCoin)
+            {
+                nameText.text = "Press E to insert coin";
+            }
+            else
+            {
+                nameText.text = "";
+            }
+
             if (Input.GetKeyDown("e") && CoinSelected == coinSelected.TwoPound && fusebox.timer <= 15 && !coinInserted && holdingCoin )
             {
                 holdingCoin = false;
