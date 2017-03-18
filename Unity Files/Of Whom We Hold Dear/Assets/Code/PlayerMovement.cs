@@ -205,15 +205,15 @@ public class PlayerMovement : MonoBehaviour
 
             if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.TwoPound)
             {
-                fusebox.timer += 180;
+                fusebox.timer += 200;
             }
             if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.Pound)
             {
-                fusebox.timer += 90;
+                fusebox.timer += 130;
             }
             if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.FiftyPence)
             {
-                fusebox.timer += 45;
+                fusebox.timer += 60;
             }
         }
         if (puzzlecam3.enabled == false)
