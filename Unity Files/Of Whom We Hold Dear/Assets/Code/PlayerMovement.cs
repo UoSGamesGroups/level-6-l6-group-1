@@ -5,25 +5,21 @@ using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
-
-    public float speed = 20.0f;
     public Transform[] spawnlocations;
-
     public Text nameText;               // Text for prompting player of an object
     public GameObject currentCoin;
     public Transform coinPos;
     public bool holdingCoin;
     public Camera cam1;
     public Camera cam2;
-    public Camera puzzlecam3;                   // Sliding puzzle camera 
+    public Camera puzzlecam3;                   // Soiding puzzle camera 
     public enum coinSelected { TwoPound, Pound, FiftyPence };
     public enum fuseBoxCurrentCoin { TwoPound, Pound, FiftyPence };
     public enum respawnLocations { memory1, memory2, memory3, memory4, memory5, prologue_epilogue };
 
     public Animator animation;
     public Vector3 move;
-    public bool lockcontrols = true;
-
+    public bool lockcontrols = true;  
     public GameController gamecontroller;
     public coinSelected CoinSelected;
     public fuseBoxCurrentCoin FuseBoxCurrentCoin;
@@ -49,29 +45,27 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip CoinInSound;
     public AudioClip EmergencyHandle;
     public AudioClip LowPowerSound;
-
+    public bool m_MovementSetup;
     private AudioSource Source;
-
-    void Awake()
-    {
-        nameText = GameObject.Find("PromptText").GetComponent<Text>();
-    }
+    public 
 
     void Start()
     {
-        GetComponent<Rigidbody>().freezeRotation = true;
+       // GetComponent<Rigidbody>().freezeRotation = true;
         Cursor.lockState = CursorLockMode.Locked;
-        Physics.gravity = new Vector3(0, -35.0F, 0);
-        cam1.enabled = true;
-        cam2.enabled = false;
-
+        nameText = GameObject.Find("PromptText").GetComponent<Text>();
         Source = GetComponent<AudioSource>();
         gamecontroller = GameObject.FindGameObjectWithTag("NoticeBoard").GetComponent<GameController>();
         fusebox = GameObject.FindGameObjectWithTag("Fusebox").GetComponent<FuseBox>();
         RespawnLocations();
-        CallAnimations("WakeUpProgression", 5);
     }
 
+    public void FirstAnimation()
+    {
+        cam1.enabled = enabled;
+        cam2.enabled = !enabled;
+        CallAnimations("WakeUpProgression", 5);
+    }
     public void CallAnimations(string failanimation, int animationtime)
     {
         inAnimation = true;
@@ -169,7 +163,7 @@ public class PlayerMovement : MonoBehaviour
             currentCoin.transform.position = coinPos.transform.position;
         }
 
-        if (lockcontrols)
+        /*if (lockcontrols)
         {
             float translation = Input.GetAxis("Vertical") * speed;
             float straffe = Input.GetAxis("Horizontal") * speed;
@@ -177,7 +171,7 @@ public class PlayerMovement : MonoBehaviour
             straffe *= Time.deltaTime;
 
             transform.Translate(straffe, 0, translation);
-        }
+        }*/
 
         if (Input.GetKeyDown("escape"))
         {

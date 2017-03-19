@@ -91,7 +91,7 @@ public class CarerNavigation : MonoBehaviour
             nodePosition = posInArray;
         }
 
-        if (playermovement.carerTrigger && !foundPlayer)
+        if (!foundPlayer)
         {
             navMeshAgent.SetDestination(carerMovementNodes[nodePosition].position);
         }
