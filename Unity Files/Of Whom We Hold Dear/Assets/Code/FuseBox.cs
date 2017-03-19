@@ -132,7 +132,7 @@ public class FuseBox : MonoBehaviour {
     IEnumerator LowPowerBeep()
     {
         AudioSource.PlayClipAtPoint(LowPowerSound, FuseBoxObject.transform.position);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2f);
         AudioSource.PlayClipAtPoint(LowPowerSound, FuseBoxObject.transform.position);
         if(timer <= 15 && timer > 0)
         {

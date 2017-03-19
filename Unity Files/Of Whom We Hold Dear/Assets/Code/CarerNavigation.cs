@@ -127,7 +127,7 @@ public class CarerNavigation : MonoBehaviour
             }
         }
 
-        if (playermovement.carerTrigger && foundPlayer)
+        if (foundPlayer)
         {
             navMeshAgent.SetDestination(player.transform.position);
             navMeshAgent.GetComponent<NavMeshAgent>().speed = chaseSpeed;
@@ -146,7 +146,7 @@ public class CarerNavigation : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (stopChasing && playermovement.carerTrigger)
+        if (stopChasing)
         {
             if(!foundPlayer)
             {
@@ -159,7 +159,6 @@ public class CarerNavigation : MonoBehaviour
             
             if (Physics.CapsuleCast(point1,point2, 3f, transform.forward,out hit, 200))
             {
-                //Debug.
                 Debug.DrawLine(transform.position, hit.transform.position);
                 Debug.Log(hit.collider.tag);
                 if (hit.collider.tag == "Player")

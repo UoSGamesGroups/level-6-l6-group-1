@@ -383,13 +383,6 @@ public class PlayerMovement : MonoBehaviour
                 Source.PlayOneShot(HandleCrank);
             }
         }
-        if (other.gameObject.tag == "TestSceneMovement")
-        {
-            if (Input.GetKeyDown("e"))
-            {
-                CallAnimations("FallProggession", 10);
-            }
-        }
         if (other.gameObject.tag == "SignificantItem")              // If player presses E when in trigger of significant item, activates or deactivates camera to puzzle
         {
             if (other.gameObject.GetComponent<Renderer>().isVisible)
@@ -400,10 +393,9 @@ public class PlayerMovement : MonoBehaviour
             {
                 nameText.text = "";
             }
-
             if (Input.GetKeyDown("e"))
             {
-                PuzzleCameraSwap();
+                PuzzleCameraSwap(); 
             }
         }
     }
@@ -423,8 +415,8 @@ public class PlayerMovement : MonoBehaviour
     {
         nameText.enabled = !nameText.enabled;
         puzzlecam3.enabled = !puzzlecam3.enabled;
-        inAnimation = !inAnimation;
         lockcontrols = !lockcontrols;
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = !Cursor.visible;
     }
 }
