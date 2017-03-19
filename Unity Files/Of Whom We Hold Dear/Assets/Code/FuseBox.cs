@@ -58,7 +58,7 @@ public class FuseBox : MonoBehaviour {
         }
         if (timer <= 15 && WarnNoise)
         {
-            AudioSource.PlayClipAtPoint(LowPowerSound, FuseBoxObject.transform.position);
+            StartCoroutine(LowPowerBeep());
             WarnNoise = false;
         }
         if(lastArray) 
@@ -128,6 +128,16 @@ public class FuseBox : MonoBehaviour {
         WarnNoise = true;
         
         AudioSource.PlayClipAtPoint(GeneratorOn, FuseBoxObject.transform.position);
+    }
+    IEnumerator LowPowerBeep()
+    {
+        AudioSource.PlayClipAtPoint(LowPowerSound, FuseBoxObject.transform.position);
+        yield return new WaitForSeconds(0.5f);
+        AudioSource.PlayClipAtPoint(LowPowerSound, FuseBoxObject.transform.position);
+        if(timer <= 15 && timer > 0)
+        {
+            StartCoroutine(LowPowerBeep());
+        }
     }
 
     IEnumerator Wait()

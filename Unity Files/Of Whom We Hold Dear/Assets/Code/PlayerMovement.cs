@@ -183,7 +183,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
         }
-        if (FuseClickingRestart >= 20 && fusebox.lastArray)
+        if (FuseClickingRestart >= 10 && fusebox.lastArray)
         {
             if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.TwoPound)
             {
@@ -197,7 +197,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 RestartLights(45);
             }
-        }else if(FuseClickingRestart >= 20 && !fusebox.lastArray && fusebox.EngagedGreenLight.activeSelf)
+        }else if(FuseClickingRestart >= 10 && !fusebox.lastArray && fusebox.EngagedGreenLight.activeSelf)
         {
             FuseClickingRestart = 0;
             fusebox.CoinInsertedPurpleLight.SetActive(false);
@@ -387,7 +387,7 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 FuseClickingRestart++;
-                CrankHandle.transform.Rotate(0,0,18);
+                CrankHandle.transform.Rotate(0,0,36);
                 Source.PlayOneShot(HandleCrank);
             }
         }
