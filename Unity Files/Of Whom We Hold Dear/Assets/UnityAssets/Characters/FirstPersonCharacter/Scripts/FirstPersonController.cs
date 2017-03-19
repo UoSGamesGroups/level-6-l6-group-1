@@ -61,7 +61,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
             playerMovement.FirstAnimation();
         }
 
-
         // Update is called once per frame
         private void Update()
         {

@@ -47,7 +47,6 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip LowPowerSound;
     public bool m_MovementSetup;
     private AudioSource Source;
-    public 
 
     void Start()
     {
@@ -59,7 +58,6 @@ public class PlayerMovement : MonoBehaviour
         fusebox = GameObject.FindGameObjectWithTag("Fusebox").GetComponent<FuseBox>();
         RespawnLocations();
     }
-
     public void FirstAnimation()
     {
         cam1.enabled = enabled;
