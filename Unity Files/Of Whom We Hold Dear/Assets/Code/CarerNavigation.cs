@@ -31,6 +31,7 @@ public class CarerNavigation : MonoBehaviour
 
     public Transform TopCapsule;
     public Transform BottomCapsule;
+    public GameObject characterMesh;
 
     // Use this for initialization
     void Start()
@@ -102,7 +103,7 @@ public class CarerNavigation : MonoBehaviour
 
         if(!lookedAt && !stopChasing)
         {
-            GetComponent<MeshRenderer>().enabled = false;
+            characterMesh.SetActive(false);
         }
         
         if (fusebox.lastArray)
@@ -110,7 +111,7 @@ public class CarerNavigation : MonoBehaviour
             stopChasing = true;
             CarerLight.SetActive(true);
             navMeshAgent.GetComponent<NavMeshAgent>().speed = searchingSpeed;
-            GetComponent<MeshRenderer>().enabled = true;
+            characterMesh.SetActive(true);
         }
         else
         {
@@ -186,6 +187,7 @@ public class CarerNavigation : MonoBehaviour
         {
             foundPlayer = true;
             animation.SetBool("Finding", false);
+            Debug.Log("PlayerInRaduis");
         }
     }
 }

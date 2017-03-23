@@ -417,6 +417,5 @@ public class PlayerMovement : MonoBehaviour
         puzzlecam3.enabled = !puzzlecam3.enabled;
         lockcontrols = !lockcontrols;
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = !Cursor.visible;
     }
 }
