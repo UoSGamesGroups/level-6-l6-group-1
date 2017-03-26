@@ -12,6 +12,7 @@ public struct LightShuffle
 public class FuseBox : MonoBehaviour {
 
     public GameObject[] lightArray;
+    public GameObject[] lightSources;
     public GameObject resetRedLight;
     public GameObject EngagedGreenLight;
     public GameObject CoinInsertedPurpleLight;
@@ -33,11 +34,17 @@ public class FuseBox : MonoBehaviour {
     public AudioClip GeneratorOn;
     public AudioClip GeneratorOff;
     public AudioClip LowPowerSound;
+    public Color normalAmbientColour;
+    public Color powerOutAmbientColour;
+
 
     private AudioSource Source;
 
     void Start ()
     {
+        ColorUtility.TryParseHtmlString("#353535", out normalAmbientColour);
+        ColorUtility.TryParseHtmlString("#060606", out powerOutAmbientColour);
+        lightSources = GameObject.FindGameObjectsWithTag("Light");
         playermovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         callOnce = true;
         timer += StartTimer;
@@ -142,6 +149,21 @@ public class FuseBox : MonoBehaviour {
 
     IEnumerator Wait()
     {
+        foreach(GameObject lightObj in lightSources)
+        {
+            GameObject light = lightObj.transform.GetChild(0).gameObject;
+
+            if (light.activeSelf == true)
+            {
+                yield return new WaitForSeconds(0.1f);
+                light.SetActive(false);
+            }
+            else
+            {
+                yield return new WaitForSeconds(0.1f);
+                light.SetActive(true);
+            }
+        }
         foreach (GameObject light in lightArray)
         {
             if (light.activeSelf == true)
@@ -161,10 +183,12 @@ public class FuseBox : MonoBehaviour {
         {
             lastArray = true;
             noticeBoardLight.SetActive(true);
+            RenderSettings.ambientLight = powerOutAmbientColour;
         } else {
 
             lastArray = false;
             noticeBoardLight.SetActive(false);
+            RenderSettings.ambientLight = normalAmbientColour;
         }
 
     }
