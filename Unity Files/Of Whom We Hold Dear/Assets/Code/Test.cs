@@ -5,8 +5,9 @@ using UnityEngine.SceneManagement;
 public class Test : MonoBehaviour {
 
     int index;
+    public GameObject carer;
 
-    void NextScene()
+    public void NextScene()
     {
         index = SceneManager.GetActiveScene().buildIndex;
         index ++;
@@ -15,5 +16,15 @@ public class Test : MonoBehaviour {
             index = 0;
         }
         SceneManager.LoadScene(index);
+    }
+    public void ShowCarer()
+    {
+        if(carer.activeSelf)
+        {
+            carer.SetActive(false);
+        }else
+        {
+            carer.SetActive(true);
+        }
     }
 }

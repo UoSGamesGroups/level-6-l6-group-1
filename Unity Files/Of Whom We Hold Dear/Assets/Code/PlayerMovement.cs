@@ -47,6 +47,7 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip LowPowerSound;
     public bool m_MovementSetup;
     private AudioSource Source;
+    public AudioClip StairFallSound;
 
     void Start()
     {
@@ -235,12 +236,15 @@ public class PlayerMovement : MonoBehaviour
         }
             if (other.gameObject.tag == "Fall")
         {
+            transform.position = new Vector3(-267.47f, 22.97f, -28.61f);
+            transform.eulerAngles = new Vector3(0, -45.18f, 0);
             inAnimation = true;
             cam1.enabled = !cam1.enabled;
             cam2.enabled = !cam2.enabled;
             lockcontrols = false;
             animation.SetBool("Fall", true);
             GetComponent<Renderer>().enabled = false;
+            Source.PlayOneShot(StairFallSound);
         }
     }
 
@@ -383,6 +387,22 @@ public class PlayerMovement : MonoBehaviour
                 Source.PlayOneShot(HandleCrank);
             }
         }
+        if (other.gameObject.tag == "MemoryItem")
+        {
+            if (other.gameObject.GetComponent<Renderer>().isVisible)
+            {
+                nameText.text = "Press E to continue";
+                if (Input.GetKeyDown("e"))
+                {
+                    CallAnimations("FallProggession", 5);
+                }
+            }
+            else
+            {
+                nameText.text = "";
+            }
+        }
+
         if (other.gameObject.tag == "SignificantItem")              // If player presses E when in trigger of significant item, activates or deactivates camera to puzzle
         {
             if (other.gameObject.GetComponent<Renderer>().isVisible)

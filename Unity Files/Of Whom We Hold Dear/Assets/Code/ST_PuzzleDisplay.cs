@@ -205,11 +205,14 @@ public class ST_PuzzleDisplay : MonoBehaviour
 		if(Complete)
 		{
 			Debug.Log("Puzzle Complete!");
-            fusebox.LightOff();
+            if (fusebox.lightArray[fusebox.lightArray.Length - 1].activeSelf == true)
+            {
+                fusebox.LightOff();
+            }
             fusebox.timerText.SetActive(false);
             playermovement.PuzzleCameraSwap();
             Source.PlayOneShot(CompleteSound);
-            Complete = false;   
+            Complete = false;    
         }
 		yield return null;
 	}
