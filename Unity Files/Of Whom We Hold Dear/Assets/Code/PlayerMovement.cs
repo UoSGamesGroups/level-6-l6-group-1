@@ -438,4 +438,11 @@ public class PlayerMovement : MonoBehaviour
         lockcontrols = !lockcontrols;
         Cursor.lockState = CursorLockMode.None;
     }
+    public void TurnToFaceCarer()
+    {
+        lockcontrols = false;
+
+        var targetRotation = Quaternion.LookRotation(Carer.GetComponent<CarerNavigation>().carerFace.transform.position - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * Time.deltaTime);
+    }
 }

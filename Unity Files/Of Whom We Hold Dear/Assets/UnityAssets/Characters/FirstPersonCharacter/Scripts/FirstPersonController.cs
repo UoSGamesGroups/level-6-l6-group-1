@@ -43,6 +43,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
         public PlayerMovement playerMovement;
+        public float sprintTimer;
+        public bool exhuasted;
+        public float localSpeed;
 
         // Use this for initialization
         private void Start()
@@ -59,6 +62,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_AudioSource = GetComponent<AudioSource>();
 			m_MouseLook.Init(transform , m_Camera.transform);
             playerMovement.FirstAnimation();
+            localSpeed = m_WalkSpeed;
         }
 
         // Update is called once per frame
@@ -211,7 +215,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
             // Read input
             float horizontal = CrossPlatformInputManager.GetAxis("Horizontal");
             float vertical = CrossPlatformInputManager.GetAxis("Vertical");
-
             bool waswalking = m_IsWalking;
 
 #if !MOBILE_INPUT
@@ -219,8 +222,39 @@ namespace UnityStandardAssets.Characters.FirstPerson
             // keep track of whether or not the character is walking or running
             m_IsWalking = !Input.GetKey(KeyCode.LeftShift);
 #endif
+            if (m_IsWalking)
+            {
+                localSpeed = m_WalkSpeed;
+                if(sprintTimer >= 0)
+                {
+                    sprintTimer -= Time.deltaTime;
+                }
+            }
+
             // set the desired speed to be walking or running
-            speed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;
+            if (!m_IsWalking && m_CharacterController.velocity.sqrMagnitude > 0 && !exhuasted)
+            {
+                sprintTimer += Time.deltaTime;
+                localSpeed = m_RunSpeed;
+
+                if (sprintTimer >= 1)
+                {
+                    sprintTimer = 5;
+                    exhuasted = !exhuasted;
+                }
+            }      
+            if (exhuasted)
+            {
+                sprintTimer -= Time.deltaTime;
+                localSpeed = m_WalkSpeed;
+
+                if (sprintTimer <= 0)
+                {
+                    exhuasted = !exhuasted;
+                }
+            }
+            speed = localSpeed;
+
             m_Input = new Vector2(horizontal, vertical);
 
             // normalize input if it exceeds 1 in combined length:

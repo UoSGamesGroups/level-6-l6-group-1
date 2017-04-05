@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System;
 
 public class CarerNavigation : MonoBehaviour
 {
@@ -28,10 +29,13 @@ public class CarerNavigation : MonoBehaviour
     public float helpCarerFindTimer;
     public int posInArray;
     public float loseSightOfPlayer;
+    public float caughtTimer;
 
     public Transform TopCapsule;
     public Transform BottomCapsule;
     public GameObject characterMesh;
+    public GameObject carerFace;
+    public bool playSoundClip;
 
     // Use this for initialization
     void Start()
@@ -134,15 +138,32 @@ public class CarerNavigation : MonoBehaviour
             navMeshAgent.GetComponent<NavMeshAgent>().speed = chaseSpeed;
         }
 
-        if (foundPlayer && navMeshAgent.remainingDistance < 5f)
+        if (foundPlayer && navMeshAgent.remainingDistance <= 6f)
         {
-            PlayerCaught();
-        }
+            if(!playSoundClip)
+            {
+                Debug.Log("PLAY SOUND");
+                //Playsound
+                playSoundClip = true;
+            }
+
+            navMeshAgent.GetComponent<NavMeshAgent>().Stop();
+
+             caughtTimer += Time.deltaTime;
+             playermovement.TurnToFaceCarer();
+
+                if (caughtTimer >=2)
+                {
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                }
+         }  
     }
 
-    void PlayerCaught()
+    IEnumerable WaitForSeconds(int time)
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Debug.Log(Time.time);
+        yield return new WaitForSeconds(time);
+        Debug.Log(Time.time);
     }
 
     void FixedUpdate()
@@ -160,13 +181,13 @@ public class CarerNavigation : MonoBehaviour
             
             if (Physics.CapsuleCast(point1,point2, 3f, transform.forward,out hit, 200))
             {
-                Debug.DrawLine(transform.position, hit.transform.position);
-                Debug.Log(hit.collider.tag);
+                //Debug.DrawLine(transform.position, hit.transform.position);
+               // Debug.Log(hit.collider.tag);
                 if (hit.collider.tag == "Player")
                 {
                     foundPlayer = true;
                     animation.SetBool("Finding", false);
-                    Debug.Log(hit.collider.tag);
+                  //  Debug.Log(hit.collider.tag);
                 }
                 if(foundPlayer && hit.collider.tag != "Player")
                 {
