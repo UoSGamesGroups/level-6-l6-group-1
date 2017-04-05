@@ -128,27 +128,30 @@ public class CarerNavigation : MonoBehaviour
             if(lookedAt)
             {
                 navMeshAgent.GetComponent<NavMeshAgent>().speed = 0;
-                transform.LookAt(player.transform.position);
+                var targetRotation = Quaternion.LookRotation(player.transform.position - transform.position);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * Time.deltaTime);
             }
         }
-
         if (foundPlayer)
         {
             navMeshAgent.SetDestination(player.transform.position);
             navMeshAgent.GetComponent<NavMeshAgent>().speed = chaseSpeed;
         }
 
-        if (foundPlayer && navMeshAgent.remainingDistance <= 6f)
+        if (foundPlayer && navMeshAgent.remainingDistance <= 6.5f)
         {
-            if(!playSoundClip)
+            var targetRotation = Quaternion.LookRotation(player.transform.position - transform.position);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * Time.deltaTime);
+
+            navMeshAgent.velocity = new Vector3(0, 0, 0);
+            navMeshAgent.GetComponent<NavMeshAgent>().Stop();
+
+            if (!playSoundClip)
             {
                 Debug.Log("PLAY SOUND");
                 //Playsound
                 playSoundClip = true;
             }
-
-            navMeshAgent.GetComponent<NavMeshAgent>().Stop();
-
              caughtTimer += Time.deltaTime;
              playermovement.TurnToFaceCarer();
 
