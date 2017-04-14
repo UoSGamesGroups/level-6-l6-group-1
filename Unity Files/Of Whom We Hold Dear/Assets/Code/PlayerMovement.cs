@@ -297,11 +297,9 @@ public class PlayerMovement : MonoBehaviour
                 nameText.text = "";
             }
             if (Input.GetKeyDown("e") && fusebox.lastArray)
-            {
-                
+            {              
                 if (coinInserted)
-                {
-                   
+                {                
                     if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.TwoPound)
                     {
                         Instantiate(CoinTypes[0], ReturnCoin.transform.position, Quaternion.identity);
@@ -405,7 +403,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (other.gameObject.tag == "SignificantItem")              // If player presses E when in trigger of significant item, activates or deactivates camera to puzzle
         {
-            if (other.gameObject.GetComponent<Renderer>().isVisible)
+            if (other.gameObject.GetComponent<Renderer>().isVisible && fusebox.lightArray[fusebox.lightArray.Length - 1].activeSelf == true)
             {
                 nameText.text = "Press E to Interact";
             }

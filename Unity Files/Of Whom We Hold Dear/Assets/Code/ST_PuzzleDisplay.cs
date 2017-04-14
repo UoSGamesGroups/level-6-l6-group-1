@@ -40,11 +40,14 @@ public class ST_PuzzleDisplay : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-
         this.transform.localScale = PuzzleScale;
-	}
 
-	public Vector3 GetTargetLocation(ST_PuzzleTile thisTile)
+        if (fusebox.lightArray[fusebox.lightArray.Length - 1].activeSelf == false && playermovement.puzzlecam3.enabled)
+        {
+            playermovement.PuzzleCameraSwap();
+        }
+    }
+    public Vector3 GetTargetLocation(ST_PuzzleTile thisTile)
 	{
 		// checks position the tile can move to
 		ST_PuzzleTile MoveTo = CheckIfWeCanMove((int)thisTile.GridLocation.x, (int)thisTile.GridLocation.y, thisTile);
