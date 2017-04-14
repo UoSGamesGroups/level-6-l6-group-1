@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
 
     public Animator animation;
     public Vector3 move;
-    public bool lockcontrols = true;  
+    public bool lockcontrols = true;
     public GameController gamecontroller;
     public coinSelected CoinSelected;
     public fuseBoxCurrentCoin FuseBoxCurrentCoin;
@@ -48,10 +48,11 @@ public class PlayerMovement : MonoBehaviour
     public bool m_MovementSetup;
     private AudioSource Source;
     public AudioClip StairFallSound;
+    public float firstVisitTimer;
 
     void Start()
     {
-       // GetComponent<Rigidbody>().freezeRotation = true;
+        firstVisitTimer = 3;
         Cursor.lockState = CursorLockMode.Locked;
         nameText = GameObject.Find("PromptText").GetComponent<Text>();
         Source = GetComponent<AudioSource>();
@@ -190,7 +191,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 RestartLights(45);
             }
-        }else if(FuseClickingRestart >= 10 && !fusebox.lastArray && fusebox.EngagedGreenLight.activeSelf)
+        }
+        else if (FuseClickingRestart >= 10 && !fusebox.lastArray && fusebox.EngagedGreenLight.activeSelf)
         {
             FuseClickingRestart = 0;
             fusebox.CoinInsertedPurpleLight.SetActive(false);
@@ -234,7 +236,7 @@ public class PlayerMovement : MonoBehaviour
         {
             carerTrigger = true;
         }
-            if (other.gameObject.tag == "Fall")
+        if (other.gameObject.tag == "Fall")
         {
             transform.position = new Vector3(-267.47f, 22.97f, -28.61f);
             transform.eulerAngles = new Vector3(0, -45.18f, 0);
@@ -250,17 +252,30 @@ public class PlayerMovement : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
+        if (other.gameObject.tag == "NoticeBoard")
+        {
+            if (!gamecontroller.firstVisit && other.gameObject.GetComponent<Renderer>().isVisible)
+            {
+                firstVisitTimer -= Time.deltaTime;
+            }
+            if (firstVisitTimer <= 0 && !gamecontroller.firstVisit)
+            {
+                gamecontroller.firstVisit = true;
+                gamecontroller.FirstVisit();
+            }
+        }
+
         if (other.gameObject.tag == "TwoPound" || other.gameObject.tag == "Pound" || other.gameObject.tag == "FiftyPence")
         {
             if (other.gameObject.GetComponent<Renderer>().isVisible && !holdingCoin)
             {
-            nameText.text = "Press E to pickup";
+                nameText.text = "Press E to pickup";
             }
             else
             {
                 nameText.text = "";
             }
-            
+
             if (Input.GetKeyDown("e") && !holdingCoin)
             {
                 currentCoin = other.gameObject;
@@ -283,23 +298,23 @@ public class PlayerMovement : MonoBehaviour
                 {
                     CoinSelected = coinSelected.Pound;
                 }
-             
+
             }
         }
         if (other.gameObject.tag == "ResetLights")
         {
             if (other.gameObject.GetComponent<Renderer>().isVisible)
             {
-            nameText.text = "Press E to interact";
+                nameText.text = "Press E to interact";
             }
             else
             {
                 nameText.text = "";
             }
             if (Input.GetKeyDown("e") && fusebox.lastArray)
-            {              
+            {
                 if (coinInserted)
-                {                
+                {
                     if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.TwoPound)
                     {
                         Instantiate(CoinTypes[0], ReturnCoin.transform.position, Quaternion.identity);
@@ -323,11 +338,11 @@ public class PlayerMovement : MonoBehaviour
         {
             if (other.gameObject.GetComponent<Renderer>().isVisible)
             {
-               nameText.text = "Please insert coin";
+                nameText.text = "Please insert coin";
             }
-           else
+            else
             {
-               nameText.text = "";
+                nameText.text = "";
 
             }
             if (holdingCoin)
@@ -339,7 +354,7 @@ public class PlayerMovement : MonoBehaviour
                 nameText.text = "";
             }
 
-            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.TwoPound && fusebox.timer <= 15 && !coinInserted && holdingCoin )
+            if (Input.GetKeyDown("e") && CoinSelected == coinSelected.TwoPound && fusebox.timer <= 15 && !coinInserted && holdingCoin)
             {
                 holdingCoin = false;
                 fusebox.CoinInsertedPurpleLight.SetActive(true);
@@ -371,7 +386,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (other.gameObject.GetComponent<Renderer>().isVisible)
             {
-               nameText.text = "Click to crank handle";
+                nameText.text = "Click to crank handle";
             }
             else
             {
@@ -381,7 +396,7 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 FuseClickingRestart++;
-                CrankHandle.transform.Rotate(0,0,36);
+                CrankHandle.transform.Rotate(0, 0, 36);
                 Source.PlayOneShot(HandleCrank);
             }
         }
@@ -413,13 +428,13 @@ public class PlayerMovement : MonoBehaviour
             }
             if (Input.GetKeyDown("e"))
             {
-                PuzzleCameraSwap(); 
+                PuzzleCameraSwap();
             }
         }
     }
 
     // When player leaves a trigger, the text will reset
-    void OnTriggerExit ()
+    void OnTriggerExit()
     {
         nameText.text = "";
     }
