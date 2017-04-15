@@ -43,7 +43,9 @@ public class FuseBox : MonoBehaviour {
     void Start ()
     {
         ColorUtility.TryParseHtmlString("#353535", out normalAmbientColour);
-        ColorUtility.TryParseHtmlString("#060606", out powerOutAmbientColour);
+        ColorUtility.TryParseHtmlString("#000000", out powerOutAmbientColour);
+        RenderSettings.ambientLight = normalAmbientColour;
+
         lightSources = GameObject.FindGameObjectsWithTag("Light");
         playermovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         callOnce = true;

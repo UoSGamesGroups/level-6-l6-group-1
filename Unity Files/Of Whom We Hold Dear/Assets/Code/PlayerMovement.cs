@@ -163,16 +163,6 @@ public class PlayerMovement : MonoBehaviour
             currentCoin.transform.position = coinPos.transform.position;
         }
 
-        /*if (lockcontrols)
-        {
-            float translation = Input.GetAxis("Vertical") * speed;
-            float straffe = Input.GetAxis("Horizontal") * speed;
-            translation *= Time.deltaTime;
-            straffe *= Time.deltaTime;
-
-            transform.Translate(straffe, 0, translation);
-        }*/
-
         if (Input.GetKeyDown("escape"))
         {
             Cursor.lockState = CursorLockMode.None;
@@ -418,7 +408,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (other.gameObject.tag == "SignificantItem")              // If player presses E when in trigger of significant item, activates or deactivates camera to puzzle
         {
-            if (other.gameObject.GetComponent<Renderer>().isVisible && fusebox.lightArray[fusebox.lightArray.Length - 1].activeSelf == true)
+            if (other.gameObject.GetComponent<Renderer>().isVisible && fusebox.lightArray[fusebox.lightArray.Length - 1].activeSelf == true && other.gameObject.GetComponent<PuzzleBoard>().isCompleted == false)
             {
                 nameText.text = "Press E to Interact";
             }

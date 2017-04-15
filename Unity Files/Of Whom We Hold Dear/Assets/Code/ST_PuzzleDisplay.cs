@@ -27,15 +27,27 @@ public class ST_PuzzleDisplay : MonoBehaviour
 
 	void Start () 
 	{
+        Source = GetComponent<AudioSource>();
         fusebox = GameObject.FindGameObjectWithTag("Fusebox").GetComponent<FuseBox>();
         // Creates the puzzle
         CreatePuzzleTiles();  
-                     
-        // Mixes the puzzle
 		StartCoroutine(JugglePuzzle());
-
-        Source = GetComponent<AudioSource>();
 	}
+
+    public void NewTileImage(Texture tileImage, int height_Width)
+    {
+        PuzzleImage = tileImage;
+        Height = height_Width;
+        Width = height_Width;
+
+        foreach (Transform child in this.transform)
+        {
+             GameObject.Destroy(child.gameObject);
+        }
+
+        CreatePuzzleTiles();
+        StartCoroutine(JugglePuzzle());
+    }
 	
 	// Update is called once per frame
 	void Update () 
@@ -155,7 +167,7 @@ public class ST_PuzzleDisplay : MonoBehaviour
 		return thisTile;
 	}
 
-	private IEnumerator JugglePuzzle()
+	public IEnumerator JugglePuzzle()
 	{
 		yield return new WaitForSeconds(0.1f);
 
@@ -205,13 +217,9 @@ public class ST_PuzzleDisplay : MonoBehaviour
 			yield return null;
 		}
 				
-		if(Complete)
+		if(Complete && playermovement.puzzlecam3.enabled)
 		{
 			Debug.Log("Puzzle Complete!");
-            if (fusebox.lightArray[fusebox.lightArray.Length - 1].activeSelf == true)
-            {
-                fusebox.LightOff();
-            }
             fusebox.timerText.SetActive(false);
             playermovement.PuzzleCameraSwap();
             Source.PlayOneShot(CompleteSound);
@@ -242,7 +250,7 @@ public class ST_PuzzleDisplay : MonoBehaviour
 		return new Vector2(WidthIndex, HeightIndex);
 	}
 
-	private void CreatePuzzleTiles()
+	public void CreatePuzzleTiles()
 	{
 		// creates array
 		TileDisplayArray = new GameObject[Width,Height];

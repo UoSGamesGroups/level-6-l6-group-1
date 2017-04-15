@@ -153,5 +153,6 @@ public class GameController : MonoBehaviour
             door.transform.Rotate(0, -90, 0);
         }
         puzzleBoards[0].SetActive(true);
+        sT_PuzzleDisplay.NewTileImage(puzzleBoards[0].GetComponent<PuzzleBoard>().PuzzleImage, puzzleBoards[0].GetComponent<PuzzleBoard>().puzzleSize);
     }
 }
