@@ -20,14 +20,17 @@ public class ST_PuzzleDisplay : MonoBehaviour
     private Vector3 Position;
     public FuseBox fusebox;
     public PlayerMovement playermovement;
-
+    public bool jugglePuzzleCompleted;
     public AudioClip CompleteSound;                                // Will play when complete
+    public GameController gamecontroller;
 
     private AudioSource Source;
 
 	void Start () 
 	{
+        jugglePuzzleCompleted = false;
         Source = GetComponent<AudioSource>();
+        gamecontroller = GameObject.FindGameObjectWithTag("NoticeBoard").GetComponent<GameController>();
         fusebox = GameObject.FindGameObjectWithTag("Fusebox").GetComponent<FuseBox>();
         // Creates the puzzle
         CreatePuzzleTiles();  
@@ -36,6 +39,7 @@ public class ST_PuzzleDisplay : MonoBehaviour
 
     public void NewTileImage(Texture tileImage, int height_Width)
     {
+        jugglePuzzleCompleted = false;
         PuzzleImage = tileImage;
         Height = height_Width;
         Width = height_Width;
@@ -58,6 +62,7 @@ public class ST_PuzzleDisplay : MonoBehaviour
         {
             playermovement.PuzzleCameraSwap();
         }
+        StartCoroutine(CheckForComplete());
     }
     public Vector3 GetTargetLocation(ST_PuzzleTile thisTile)
 	{
@@ -190,16 +195,15 @@ public class ST_PuzzleDisplay : MonoBehaviour
                 }
 			}
 		}
+        jugglePuzzleCompleted = true;
 
-		// checks if puzzle is complete constantly
-		StartCoroutine(CheckForComplete());
-
+        // checks if puzzle is complete constantly
 		yield return null;
 	}
 
 	public IEnumerator CheckForComplete()
 	{
-		while(Complete == false)
+		while(Complete == false && jugglePuzzleCompleted)
 		{
 			// will continually check to see if tiles are all correct if boolean says false
 			Complete = true;
@@ -219,10 +223,10 @@ public class ST_PuzzleDisplay : MonoBehaviour
 				
 		if(Complete && playermovement.puzzlecam3.enabled)
 		{
-			Debug.Log("Puzzle Complete!");
-            fusebox.timerText.SetActive(false);
             playermovement.PuzzleCameraSwap();
             Source.PlayOneShot(CompleteSound);
+            gamecontroller.currentPuzzleBoard.GetComponent<PuzzleBoard>().isCompleted = true;
+            gamecontroller.returnToNoticeBoard = false;
             Complete = false;    
         }
 		yield return null;

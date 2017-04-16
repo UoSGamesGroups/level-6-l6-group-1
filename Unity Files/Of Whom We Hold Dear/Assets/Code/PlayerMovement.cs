@@ -48,11 +48,9 @@ public class PlayerMovement : MonoBehaviour
     public bool m_MovementSetup;
     private AudioSource Source;
     public AudioClip StairFallSound;
-    public float firstVisitTimer;
 
     void Start()
     {
-        firstVisitTimer = 3;
         Cursor.lockState = CursorLockMode.Locked;
         nameText = GameObject.Find("PromptText").GetComponent<Text>();
         Source = GetComponent<AudioSource>();
@@ -246,13 +244,10 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!gamecontroller.firstVisit && other.gameObject.GetComponent<Renderer>().isVisible)
             {
-                firstVisitTimer -= Time.deltaTime;
-            }
-            if (firstVisitTimer <= 0 && !gamecontroller.firstVisit)
-            {
                 gamecontroller.firstVisit = true;
                 gamecontroller.FirstVisit();
             }
+            gamecontroller.returnToNoticeBoard = true;
         }
 
         if (other.gameObject.tag == "TwoPound" || other.gameObject.tag == "Pound" || other.gameObject.tag == "FiftyPence")

@@ -29,6 +29,9 @@ public class GameController : MonoBehaviour
     public List<GameObject> gatedDoors;
     public bool firstVisit;
     public ST_PuzzleDisplay sT_PuzzleDisplay;
+    public int puzzlesInWorld;
+    public GameObject currentPuzzleBoard;
+    public bool returnToNoticeBoard;
 
     public int ReplyCount
     {
@@ -47,7 +50,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         sT_PuzzleDisplay = GameObject.FindGameObjectWithTag("SlideTile").GetComponent<ST_PuzzleDisplay>();
-
+        returnToNoticeBoard = true;
         firstVisit = false;
         TriggerGeneration();
         resetComplete = true;
@@ -154,5 +157,14 @@ public class GameController : MonoBehaviour
         }
         puzzleBoards[0].SetActive(true);
         sT_PuzzleDisplay.NewTileImage(puzzleBoards[0].GetComponent<PuzzleBoard>().PuzzleImage, puzzleBoards[0].GetComponent<PuzzleBoard>().puzzleSize);
+        currentPuzzleBoard = puzzleBoards[0];
+        puzzlesInWorld = puzzleBoards.Count;
+    }
+    public void NextPuzzle()
+    {
+        
+
+
+
     }
 }
