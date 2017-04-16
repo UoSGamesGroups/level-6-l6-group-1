@@ -30,6 +30,7 @@ public class GameController : MonoBehaviour
     public bool firstVisit;
     public ST_PuzzleDisplay sT_PuzzleDisplay;
     public int puzzlesInWorld;
+    public int puzzleIndex;
     public GameObject currentPuzzleBoard;
     public bool returnToNoticeBoard;
 
@@ -151,20 +152,25 @@ public class GameController : MonoBehaviour
     }
     public void FirstVisit()
     {
+        puzzleIndex = 0;
+
         foreach (GameObject door in gatedDoors)
         {
             door.transform.Rotate(0, -90, 0);
         }
         puzzleBoards[0].SetActive(true);
         sT_PuzzleDisplay.NewTileImage(puzzleBoards[0].GetComponent<PuzzleBoard>().PuzzleImage, puzzleBoards[0].GetComponent<PuzzleBoard>().puzzleSize);
-        currentPuzzleBoard = puzzleBoards[0];
+        currentPuzzleBoard = puzzleBoards[puzzleIndex];
         puzzlesInWorld = puzzleBoards.Count;
     }
     public void NextPuzzle()
     {
-        
-
-
-
+        if(puzzleIndex + 1 < puzzlesInWorld)
+        {
+            puzzleIndex++;
+            puzzleBoards[puzzleIndex].SetActive(true);
+            ST_PuzzleDisplay.Complete = false;
+            sT_PuzzleDisplay.NewTileImage(puzzleBoards[puzzleIndex].GetComponent<PuzzleBoard>().PuzzleImage, puzzleBoards[puzzleIndex].GetComponent<PuzzleBoard>().puzzleSize);
+        }
     }
 }
