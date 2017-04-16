@@ -7,12 +7,12 @@ using System;
 
 public class CarerNavigation : MonoBehaviour
 {
-    public UnityEngine.AI.NavMeshAgent navMeshAgent;
+    public NavMeshAgent navMeshAgent;
     public GameObject player;
     public Vector3 playerLocation;
     public bool stopChasing;
     public FuseBox fusebox;
-    public Transform startPosition;
+   // public Transform startPosition;
     public GameObject CarerLight;
     public Transform[] carerMovementNodes;
     public PlayerMovement playermovement;
@@ -40,7 +40,7 @@ public class CarerNavigation : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        transform.position = startPosition.position;
+       // transform.position = startPosition.position;
         navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         fusebox = GameObject.FindGameObjectWithTag("Fusebox").GetComponent<FuseBox>();
         playermovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
