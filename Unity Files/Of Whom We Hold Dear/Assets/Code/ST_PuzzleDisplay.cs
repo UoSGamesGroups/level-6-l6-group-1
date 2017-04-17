@@ -56,7 +56,6 @@ public class ST_PuzzleDisplay : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-        Debug.Log(Complete);
         this.transform.localScale = PuzzleScale;
 
         if (fusebox.lightArray[fusebox.lightArray.Length - 1].activeSelf == false && playermovement.puzzlecam3.enabled)

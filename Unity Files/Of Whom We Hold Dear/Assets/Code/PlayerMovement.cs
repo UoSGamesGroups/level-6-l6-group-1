@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
     public bool inAnimation;
     static public bool debugPuzzle = true;         // Stops constant animation playing after puzzle completion
     public bool carerTrigger;
-    public GameObject memoryItem;
+    //public GameObject memoryItem;
     public GameObject Carer;
     public bool playerCanSeeCarer;
     public Vector3 scaleSize;
@@ -203,14 +203,14 @@ public class PlayerMovement : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
-        if (ST_PuzzleDisplay.Complete == true)
+        /*if (ST_PuzzleDisplay.Complete == true)
         {
             if (debugPuzzle == true)
             {
-                memoryItem.SetActive(true);
+               // memoryItem.SetActive(true);
                 debugPuzzle = false;
             }
-        }
+        }*/
     }
 
     void ResetMovementControls()
@@ -389,10 +389,10 @@ public class PlayerMovement : MonoBehaviour
         {
             if (other.gameObject.GetComponent<Renderer>().isVisible)
             {
-                nameText.text = "Press E to continue";
+                nameText.text = "interact with Memory";
                 if (Input.GetKeyDown("e"))
                 {
-                    CallAnimations("FallProggession", 5);
+                    gamecontroller.memoryItem.GetComponent<MemoryItem>().memorySelected = true;
                 }
             }
             else

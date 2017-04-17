@@ -33,6 +33,7 @@ public class GameController : MonoBehaviour
     public int puzzleIndex;
     public GameObject currentPuzzleBoard;
     public bool returnToNoticeBoard;
+    public GameObject memoryItem;
 
     public int ReplyCount
     {
@@ -156,7 +157,7 @@ public class GameController : MonoBehaviour
 
         foreach (GameObject door in gatedDoors)
         {
-            door.transform.Rotate(0, -90, 0);
+            door.transform.Rotate(0, 0, -90);
         }
         puzzleBoards[0].SetActive(true);
         sT_PuzzleDisplay.NewTileImage(puzzleBoards[0].GetComponent<PuzzleBoard>().PuzzleImage, puzzleBoards[0].GetComponent<PuzzleBoard>().puzzleSize);
@@ -169,8 +170,14 @@ public class GameController : MonoBehaviour
         {
             puzzleIndex++;
             puzzleBoards[puzzleIndex].SetActive(true);
+            currentPuzzleBoard = puzzleBoards[puzzleIndex];
             ST_PuzzleDisplay.Complete = false;
             sT_PuzzleDisplay.NewTileImage(puzzleBoards[puzzleIndex].GetComponent<PuzzleBoard>().PuzzleImage, puzzleBoards[puzzleIndex].GetComponent<PuzzleBoard>().puzzleSize);
+        }
+        else
+        {
+            Debug.Log("FINISHED");
+            memoryItem.SetActive(true);
         }
     }
 }
