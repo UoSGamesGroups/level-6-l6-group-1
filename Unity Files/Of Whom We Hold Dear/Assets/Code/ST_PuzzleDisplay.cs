@@ -31,6 +31,7 @@ public class ST_PuzzleDisplay : MonoBehaviour
         jugglePuzzleCompleted = false;
         Source = GetComponent<AudioSource>();
         gamecontroller = GameObject.FindGameObjectWithTag("NoticeBoard").GetComponent<GameController>();
+        playermovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         fusebox = GameObject.FindGameObjectWithTag("Fusebox").GetComponent<FuseBox>();
         // Creates the puzzle
         CreatePuzzleTiles();  

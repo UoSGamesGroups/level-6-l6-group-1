@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System;
 
-public class MemoryItem : MonoBehaviour {
+public class MemoryItem : MonoBehaviour
+{
 
     public GameController gameController;
     public NavMeshAgent navMeshAgent;
@@ -13,19 +14,22 @@ public class MemoryItem : MonoBehaviour {
     public GameObject destination;
     public float waitForGoodData;
     public bool callOnce;
+    public bool arrived;
+    public GameObject brokenMug;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         callOnce = false;
         gameController = GameObject.FindGameObjectWithTag("NoticeBoard").GetComponent<GameController>();
         waitForGoodData = 1;
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
-        if (memorySelected)
+        if (memorySelected && !callOnce)
         {
             GetComponent<NavMeshAgent>().enabled = true;
             GetComponent<Rigidbody>().isKinematic = true;
@@ -42,12 +46,21 @@ public class MemoryItem : MonoBehaviour {
             }
             else if (navMeshAgent.remainingDistance <= 0.1f && !callOnce)
             {
-                //GetComponent<NavMeshAgent>().enabled = false;
-               // GetComponent<Rigidbody>().isKinematic = false;
-               // GetComponent<Rigidbody>().detectCollisions = true;
-               // this.gameObject.SetActive(false);
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+                GetComponent<NavMeshAgent>().enabled = false;
+                GetComponent<Rigidbody>().detectCollisions = true;
                 callOnce = true;
+                arrived = true;
             }
+        }
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (arrived)
+        {
+            Instantiate(brokenMug, transform.position, transform.rotation);
+            Destroy(gameObject);
         }
     }
 }

@@ -48,9 +48,13 @@ public class PlayerMovement : MonoBehaviour
     public bool m_MovementSetup;
     private AudioSource Source;
     public AudioClip StairFallSound;
+    public Rigidbody rb;
+    public bool callOnce;
+
 
     void Start()
     {
+        callOnce = false;
         Cursor.lockState = CursorLockMode.Locked;
         nameText = GameObject.Find("PromptText").GetComponent<Text>();
         Source = GetComponent<AudioSource>();
@@ -389,10 +393,19 @@ public class PlayerMovement : MonoBehaviour
         {
             if (other.gameObject.GetComponent<Renderer>().isVisible)
             {
-                nameText.text = "interact with Memory";
+                if (!gamecontroller.memoryItem.GetComponent<MemoryItem>().memorySelected)
+                {
+                    nameText.text = "interact with Memory";
+                }
                 if (Input.GetKeyDown("e"))
                 {
                     gamecontroller.memoryItem.GetComponent<MemoryItem>().memorySelected = true;
+                }
+                if (gamecontroller.memoryItem.GetComponent<MemoryItem>().arrived)
+                {
+                    gamecontroller.memoryItem.GetComponent<MemoryItem>().GetComponent<Rigidbody>().isKinematic = false;
+                    rb = gamecontroller.memoryItem.GetComponent<MemoryItem>().GetComponent<Rigidbody>();
+                    rb.AddForce(transform.right * 500);
                 }
             }
             else

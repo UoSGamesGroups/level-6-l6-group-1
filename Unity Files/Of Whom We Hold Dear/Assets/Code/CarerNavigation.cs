@@ -140,6 +140,11 @@ public class CarerNavigation : MonoBehaviour
 
         if (foundPlayer && navMeshAgent.remainingDistance <= 6.5f)
         {
+            if(playermovement.puzzlecam3.enabled)
+            {
+                playermovement.PuzzleCameraSwap();
+            }
+
             var targetRotation = Quaternion.LookRotation(player.transform.position - transform.position);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5 * Time.deltaTime);
 
@@ -211,7 +216,6 @@ public class CarerNavigation : MonoBehaviour
         {
             foundPlayer = true;
             animation.SetBool("Finding", false);
-            Debug.Log("PlayerInRaduis");
         }
     }
 }

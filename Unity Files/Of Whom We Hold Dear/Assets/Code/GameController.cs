@@ -58,6 +58,7 @@ public class GameController : MonoBehaviour
         resetComplete = true;
         playermovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         fusebox = GameObject.FindGameObjectWithTag("Fusebox").GetComponent<FuseBox>();
+        //puzzleBoards.AddRange(GameObject.FindGameObjectsWithTag("SignificantItem"));
 
         foreach (GameObject puzzleBoard in puzzleBoards)
         {
@@ -136,7 +137,6 @@ public class GameController : MonoBehaviour
             else
             {
                 playermovement.RestartLights(15);
-
             }
             timer = reset;
         }
@@ -176,7 +176,6 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            Debug.Log("FINISHED");
             memoryItem.SetActive(true);
         }
     }
