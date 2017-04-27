@@ -103,52 +103,67 @@ public class LocalController : MonoBehaviour {
                 switch (caseChooser) {
                     ///////////////////////////////////////////////////////////////////////////////////////
                     case 0:
-                        arrayPicker = UnityEngine.Random.Range(0, Chairs.Count);
-                        transform = itemTransformLocation[i].transform.position;
-                        transform.x += x;
-                        transform.z += z;
-                        instaPrefab = Chairs[arrayPicker];
-                        Instantiate(instaPrefab, transform, Quaternion.identity);
+                        if (Chairs.Count > 0)
+                        {
+                            arrayPicker = UnityEngine.Random.Range(0, Chairs.Count);
+                            transform = itemTransformLocation[i].transform.position;
+                            transform.x += x;
+                            transform.z += z;
+                            instaPrefab = Chairs[arrayPicker];
+                            Instantiate(instaPrefab, transform, Quaternion.identity);
+                        }
                         break;
                     ////////////////////////////////////////////////////////////////////////////////////////
 
                     case 1:
-                        arrayPicker = UnityEngine.Random.Range(0, Bed.Count);
-                        transform = itemTransformLocation[i].transform.position;
-                        transform.x += x;
-                        transform.z += z;
-                        instaPrefab = Bed[arrayPicker];
-                        Instantiate(instaPrefab, transform, Quaternion.identity);
+                        if (Bed.Count > 0)
+                        {
+                            arrayPicker = UnityEngine.Random.Range(0, Bed.Count);
+                            transform = itemTransformLocation[i].transform.position;
+                            transform.x += x;
+                            transform.z += z;
+                            instaPrefab = Bed[arrayPicker];
+                            Instantiate(instaPrefab, transform, Quaternion.identity);
+                        }
                         break;
                     ////////////////////////////////////////////////////////////////////////////////////////
 
                     case 2:
-                        arrayPicker = UnityEngine.Random.Range(0, ChestDrawers.Count);
-                        transform = itemTransformLocation[i].transform.position;
-                        transform.x += x;
-                        transform.z += z;
-                        instaPrefab = ChestDrawers[arrayPicker];
-                        Instantiate(instaPrefab, transform, Quaternion.identity);
+                        if (ChestDrawers.Count > 0)
+                        {
+                            arrayPicker = UnityEngine.Random.Range(0, ChestDrawers.Count);
+                            transform = itemTransformLocation[i].transform.position;
+                            transform.x += x;
+                            transform.z += z;
+                            instaPrefab = ChestDrawers[arrayPicker];
+                            Instantiate(instaPrefab, transform, Quaternion.identity);
+                        }
                         break;
                     ////////////////////////////////////////////////////////////////////////////////////////
 
                     case 3:
-                        arrayPicker = UnityEngine.Random.Range(0, KitchenCounter.Count);
-                        transform = itemTransformLocation[i].transform.position;
-                        transform.x += x;
-                        transform.z += z;
-                        instaPrefab = KitchenCounter[arrayPicker];
-                        Instantiate(instaPrefab, transform, Quaternion.identity);
+                        if (KitchenCounter.Count > 0)
+                        {
+                            arrayPicker = UnityEngine.Random.Range(0, KitchenCounter.Count);
+                            transform = itemTransformLocation[i].transform.position;
+                            transform.x += x;
+                            transform.z += z;
+                            instaPrefab = KitchenCounter[arrayPicker];
+                            Instantiate(instaPrefab, transform, Quaternion.identity);
+                        }
                         break;
                     /////////////////////////////////////////////////////////////////////////////////////////
 
                     case 4:
-                        arrayPicker = UnityEngine.Random.Range(0, Rug.Count);
-                        transform = itemTransformLocation[i].transform.position;
-                        transform.x += x;
-                        transform.z += z;
-                        instaPrefab = Rug[arrayPicker];
-                        Instantiate(instaPrefab, transform, Quaternion.identity);
+                        if (Rug.Count > 0)
+                        {
+                            arrayPicker = UnityEngine.Random.Range(0, Rug.Count);
+                            transform = itemTransformLocation[i].transform.position;
+                            transform.x += x;
+                            transform.z += z;
+                            instaPrefab = Rug[arrayPicker];
+                            Instantiate(instaPrefab, transform, Quaternion.identity);
+                        }
                         break;
                         /////////////////////////////////////////////////////////////////////////////////////////
                 }
@@ -159,11 +174,8 @@ public class LocalController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-
-
         Timer = gamecontroller.timer;
         replyCount = gamecontroller.ReplyCount;
-
 
         if (replyCount >= 7) {
             ChangeRoom = true;

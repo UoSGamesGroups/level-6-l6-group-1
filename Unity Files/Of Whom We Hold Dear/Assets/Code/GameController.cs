@@ -9,7 +9,6 @@ public class GameController : MonoBehaviour
 
     public float timer;
     public int reset;
-    public TextMesh CountTimer;
     public bool resetComplete;
     private int replyCount;
 
@@ -34,6 +33,8 @@ public class GameController : MonoBehaviour
     public GameObject currentPuzzleBoard;
     public bool returnToNoticeBoard;
     public GameObject memoryItem;
+    public AudioClip doorOpening;
+    public AudioClip fingerSnap;
 
     public int ReplyCount
     {
@@ -58,7 +59,6 @@ public class GameController : MonoBehaviour
         resetComplete = true;
         playermovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         fusebox = GameObject.FindGameObjectWithTag("Fusebox").GetComponent<FuseBox>();
-        //puzzleBoards.AddRange(GameObject.FindGameObjectsWithTag("SignificantItem"));
 
         foreach (GameObject puzzleBoard in puzzleBoards)
         {
@@ -80,25 +80,40 @@ public class GameController : MonoBehaviour
                 item.SetActive(false);
             }
         }
-        foreach (LocalController local in LocalControllers)
+        if (Chairs.Count > 0)
         {
-            local.PopulateChairs(Chairs);
+            foreach (LocalController local in LocalControllers)
+            {
+                local.PopulateChairs(Chairs);
+            }
         }
-        foreach (LocalController local in LocalControllers)
+        if (Bed.Count > 0)
         {
-            local.PopulateBed(Bed);
+            foreach (LocalController local in LocalControllers)
+            {
+                local.PopulateBed(Bed);
+            }
         }
-        foreach (LocalController local in LocalControllers)
+        if (ChestDrawers.Count > 0)
         {
-            local.PopulateChestDrawers(ChestDrawers);
+            foreach (LocalController local in LocalControllers)
+            {
+                local.PopulateChestDrawers(ChestDrawers);
+            }
         }
-        foreach (LocalController local in LocalControllers)
+        if (KitchenCounter.Count > 0)
         {
-            local.PopulateKitchenCounter(KitchenCounter);
+            foreach (LocalController local in LocalControllers)
+            {
+                local.PopulateKitchenCounter(KitchenCounter);
+            }
         }
-        foreach (LocalController local in LocalControllers)
+        if (Rug.Count > 0)
         {
-            local.PopulateRug(Rug);
+            foreach (LocalController local in LocalControllers)
+            {
+                local.PopulateRug(Rug);
+            }
         }
         foreach (LocalController local in LocalControllers)
         {
@@ -117,8 +132,6 @@ public class GameController : MonoBehaviour
             else
                 Destroy(allFurniture[i]);
         }
-
-        //spawnedFurniture.AddRange(GameObject.FindGameObjectsWithTag("SpawnedPrefab"));
     }
 
     // Update is called once per frame
@@ -139,6 +152,7 @@ public class GameController : MonoBehaviour
                 playermovement.RestartLights(15);
             }
             timer = reset;
+
         }
     }
 
@@ -158,7 +172,9 @@ public class GameController : MonoBehaviour
         foreach (GameObject door in gatedDoors)
         {
             door.transform.Rotate(0, 0, -90);
+            AudioSource.PlayClipAtPoint(doorOpening, door.transform.position);
         }
+        AudioSource.PlayClipAtPoint(fingerSnap, transform.position);
         puzzleBoards[0].SetActive(true);
         sT_PuzzleDisplay.NewTileImage(puzzleBoards[0].GetComponent<PuzzleBoard>().PuzzleImage, puzzleBoards[0].GetComponent<PuzzleBoard>().puzzleSize);
         currentPuzzleBoard = puzzleBoards[puzzleIndex];
@@ -168,11 +184,12 @@ public class GameController : MonoBehaviour
     {
         if(puzzleIndex + 1 < puzzlesInWorld)
         {
-            puzzleIndex++;
-            puzzleBoards[puzzleIndex].SetActive(true);
+            puzzleIndex++;     
+            returnToNoticeBoard = false;
             currentPuzzleBoard = puzzleBoards[puzzleIndex];
             ST_PuzzleDisplay.Complete = false;
             sT_PuzzleDisplay.NewTileImage(puzzleBoards[puzzleIndex].GetComponent<PuzzleBoard>().PuzzleImage, puzzleBoards[puzzleIndex].GetComponent<PuzzleBoard>().puzzleSize);
+            AudioSource.PlayClipAtPoint(fingerSnap, transform.position);
         }
         else
         {

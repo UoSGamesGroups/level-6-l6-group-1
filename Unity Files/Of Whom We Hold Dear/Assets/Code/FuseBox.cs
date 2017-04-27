@@ -47,6 +47,7 @@ public class FuseBox : MonoBehaviour {
         RenderSettings.ambientLight = normalAmbientColour;
 
         lightSources = GameObject.FindGameObjectsWithTag("Light");
+        lightArray = GameObject.FindGameObjectsWithTag("MainLight");
         playermovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         callOnce = true;
         timer += StartTimer;
@@ -157,12 +158,10 @@ public class FuseBox : MonoBehaviour {
 
             if (light.activeSelf == true)
             {
-                yield return new WaitForSeconds(0.1f);
                 light.SetActive(false);
             }
             else
             {
-                yield return new WaitForSeconds(0.1f);
                 light.SetActive(true);
             }
         }

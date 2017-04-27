@@ -48,18 +48,19 @@ public class PlayerMovement : MonoBehaviour
     public bool m_MovementSetup;
     private AudioSource Source;
     public AudioClip StairFallSound;
+    public AudioClip fingerSnap;
     public Rigidbody rb;
     public bool callOnce;
 
 
     void Start()
     {
+        Source = GetComponent<AudioSource>();
         callOnce = false;
         Cursor.lockState = CursorLockMode.Locked;
         nameText = GameObject.Find("PromptText").GetComponent<Text>();
-        Source = GetComponent<AudioSource>();
         gamecontroller = GameObject.FindGameObjectWithTag("NoticeBoard").GetComponent<GameController>();
-        fusebox = GameObject.FindGameObjectWithTag("Fusebox").GetComponent<FuseBox>();
+        fusebox = GameObject.FindGameObjectWithTag("Fusebox").GetComponent<FuseBox>();       
         RespawnLocations();
     }
     public void FirstAnimation()
@@ -207,14 +208,6 @@ public class PlayerMovement : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
-        /*if (ST_PuzzleDisplay.Complete == true)
-        {
-            if (debugPuzzle == true)
-            {
-               // memoryItem.SetActive(true);
-                debugPuzzle = false;
-            }
-        }*/
     }
 
     void ResetMovementControls()
@@ -251,7 +244,12 @@ public class PlayerMovement : MonoBehaviour
                 gamecontroller.firstVisit = true;
                 gamecontroller.FirstVisit();
             }
-            gamecontroller.returnToNoticeBoard = true;
+            if(!gamecontroller.returnToNoticeBoard)
+            {
+                gamecontroller.puzzleBoards[gamecontroller.puzzleIndex].SetActive(true);
+                gamecontroller.returnToNoticeBoard = true;
+                AudioSource.PlayClipAtPoint(fingerSnap, transform.position);
+            }
         }
 
         if (other.gameObject.tag == "TwoPound" || other.gameObject.tag == "Pound" || other.gameObject.tag == "FiftyPence")
@@ -292,7 +290,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (other.gameObject.tag == "ResetLights")
         {
-            if (other.gameObject.GetComponent<Renderer>().isVisible)
+            if (other.gameObject.GetComponent<Renderer>().isVisible && fusebox.lastArray && !fusebox.callOnce)
             {
                 nameText.text = "Press E to interact";
             }
@@ -300,27 +298,10 @@ public class PlayerMovement : MonoBehaviour
             {
                 nameText.text = "";
             }
-            if (Input.GetKeyDown("e") && fusebox.lastArray)
+            if (Input.GetKeyDown("e") && fusebox.lastArray && !fusebox.callOnce)
             {
-                if (coinInserted)
-                {
-                    if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.TwoPound)
-                    {
-                        Instantiate(CoinTypes[0], ReturnCoin.transform.position, Quaternion.identity);
-                    }
-
-                    if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.Pound)
-                    {
-                        Instantiate(CoinTypes[1], ReturnCoin.transform.position, Quaternion.identity);
-                    }
-
-                    if (FuseBoxCurrentCoin == fuseBoxCurrentCoin.FiftyPence)
-                    {
-                        Instantiate(CoinTypes[2], ReturnCoin.transform.position, Quaternion.identity);
-                    }
-                }
                 Source.PlayOneShot(EmergencyHandle);
-                RestartLights(15);
+                RestartLights(25);
             }
         }
         if (other.gameObject.tag == "Fusebox")

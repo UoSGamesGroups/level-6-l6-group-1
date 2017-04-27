@@ -7,12 +7,15 @@ public class BrokenMug : MonoBehaviour {
     public PlayerMovement playerMovement;
     public float timeTillNextMemory;
     public bool callOnce;
+    public AudioClip SmashSound;
+    public bool prop;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         callOnce = false;
         playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
-        timeTillNextMemory = 5;      
+        timeTillNextMemory = 5;
+        AudioSource.PlayClipAtPoint(SmashSound, transform.position);
     }
 	
 	// Update is called once per frame
@@ -25,7 +28,10 @@ public class BrokenMug : MonoBehaviour {
         }
         else
         {
-            timeTillNextMemory -= Time.deltaTime;
+            if (!prop)
+            {
+                timeTillNextMemory -= Time.deltaTime;
+            }
         }
     }
 }
