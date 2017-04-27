@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -35,6 +36,7 @@ public class GameController : MonoBehaviour
     public GameObject memoryItem;
     public AudioClip doorOpening;
     public AudioClip fingerSnap;
+    public TextMesh PuzzleText; // Text counting puzzles left
 
     public int ReplyCount
     {
@@ -137,6 +139,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        PuzzleText.text = puzzleIndex.ToString();
         if (timer < 0)
         {
             playermovement.CallAnimations("FallFail", 3);
