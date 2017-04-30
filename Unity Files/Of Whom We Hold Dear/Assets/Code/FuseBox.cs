@@ -23,7 +23,7 @@ public class FuseBox : MonoBehaviour {
     public float timer;
     public bool callOnce;
     public bool lastArray;
-    public int StartTimer;
+    public float StartTimer;
     public TextMesh CountTimer;
     public PlayerMovement playermovement;
     public bool puzzleCompleted;
