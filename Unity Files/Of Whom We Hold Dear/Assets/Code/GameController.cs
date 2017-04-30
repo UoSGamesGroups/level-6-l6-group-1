@@ -26,10 +26,12 @@ public class GameController : MonoBehaviour
     public PlayerMovement playermovement;
     public FuseBox fusebox;
     public List<GameObject> puzzleBoards;
+    public List<GameObject> puzzleBoards_noticeboard;
     public List<GameObject> gatedDoors;
     public bool firstVisit;
     public ST_PuzzleDisplay sT_PuzzleDisplay;
     public int puzzlesInWorld;
+    public int puzzlesInWorld_noticeboard;
     public int puzzleIndex;
     public GameObject currentPuzzleBoard;
     public bool returnToNoticeBoard;
@@ -45,7 +47,6 @@ public class GameController : MonoBehaviour
             return replyCount;
         }
     }
-
     public void RegisterLocalController(LocalController controller)
     {
         LocalControllers.Add(controller);
@@ -57,12 +58,19 @@ public class GameController : MonoBehaviour
         sT_PuzzleDisplay = GameObject.FindGameObjectWithTag("SlideTile").GetComponent<ST_PuzzleDisplay>();
         returnToNoticeBoard = true;
         firstVisit = false;
-        TriggerGeneration();
         resetComplete = true;
         playermovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         fusebox = GameObject.FindGameObjectWithTag("Fusebox").GetComponent<FuseBox>();
 
+        puzzlesInWorld = puzzleBoards.Count;
+        puzzlesInWorld_noticeboard = puzzlesInWorld;
+        puzzleIndex = 0;
+      
         foreach (GameObject puzzleBoard in puzzleBoards)
+        {
+            puzzleBoard.SetActive(false);
+        }
+        foreach (GameObject puzzleBoard in puzzleBoards_noticeboard)
         {
             puzzleBoard.SetActive(false);
         }
@@ -139,7 +147,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PuzzleText.text = puzzleIndex.ToString();
+        PuzzleText.text = puzzlesInWorld_noticeboard.ToString();
         if (timer < 0)
         {
             playermovement.CallAnimations("FallFail", 3);
@@ -155,7 +163,6 @@ public class GameController : MonoBehaviour
                 playermovement.RestartLights(15);
             }
             timer = reset;
-
         }
     }
 
@@ -170,7 +177,7 @@ public class GameController : MonoBehaviour
     }
     public void FirstVisit()
     {
-        puzzleIndex = 0;
+        currentPuzzleBoard = puzzleBoards[puzzleIndex];
 
         foreach (GameObject door in gatedDoors)
         {
@@ -179,15 +186,17 @@ public class GameController : MonoBehaviour
         }
         AudioSource.PlayClipAtPoint(fingerSnap, transform.position);
         puzzleBoards[0].SetActive(true);
+        puzzleBoards_noticeboard[0].SetActive(true);
         sT_PuzzleDisplay.NewTileImage(puzzleBoards[0].GetComponent<PuzzleBoard>().PuzzleImage, puzzleBoards[0].GetComponent<PuzzleBoard>().puzzleSize);
-        currentPuzzleBoard = puzzleBoards[puzzleIndex];
-        puzzlesInWorld = puzzleBoards.Count;
     }
     public void NextPuzzle()
     {
         if(puzzleIndex + 1 < puzzlesInWorld)
         {
-            puzzleIndex++;     
+            puzzleBoards_noticeboard[puzzleIndex].GetComponent<Rigidbody>().isKinematic = false;
+            puzzleBoards[puzzleIndex].SetActive(false);
+            puzzleIndex++;
+            puzzlesInWorld_noticeboard--;
             returnToNoticeBoard = false;
             currentPuzzleBoard = puzzleBoards[puzzleIndex];
             ST_PuzzleDisplay.Complete = false;
@@ -196,6 +205,8 @@ public class GameController : MonoBehaviour
         }
         else
         {
+            puzzlesInWorld_noticeboard--;
+            puzzleBoards_noticeboard[puzzleIndex].GetComponent<Rigidbody>().isKinematic = false;
             memoryItem.SetActive(true);
         }
     }

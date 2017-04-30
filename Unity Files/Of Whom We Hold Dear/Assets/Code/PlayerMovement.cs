@@ -247,7 +247,8 @@ public class PlayerMovement : MonoBehaviour
             if(!gamecontroller.returnToNoticeBoard)
             {
                 gamecontroller.puzzleBoards[gamecontroller.puzzleIndex].SetActive(true);
-                gamecontroller.returnToNoticeBoard = true;
+                gamecontroller.puzzleBoards_noticeboard[gamecontroller.puzzleIndex].SetActive(true);
+                gamecontroller.returnToNoticeBoard = true; 
                 AudioSource.PlayClipAtPoint(fingerSnap, transform.position);
             }
         }
